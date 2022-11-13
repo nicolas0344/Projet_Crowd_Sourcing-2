@@ -1,0 +1,122 @@
+https://michaelpjcamilleri.wordpress.com/2020/06/22/reaching-a-consensus-in-crowdsourced-data-using-the-dawid-skene-model/
+
+crowsourcing, small chunks of datasets to label
+human labelling
+
+In this tutorial we will go over a probabilistic method to achieve a consensus among multiple annotators in such scenarios.
+
+___
+
+We will look at the non-probabilistic way of attacking the problem by Majority Voting (MV)
+
+and then introduce the Dawid-Skene (DS) Model [1] for performing inference in a probabilistic way.
+
+We will conclude by casting MV in the same framework as the DS model (The theory behind the DS Model is heavily grounded in probabilistic graphical models)
+
+___
+
+example : mouse behaviour modelling
+
+we have videos of mice running about in their cages (Fig. 1), with the aim of analysing their behaviour progression according to a set of labels. {Resting	Self-Grooming Social-Grooming Drinking Feeding Climbing Moving}
+
+these behaviours are obtained by having someone go through the videos and manually indicate what each mouse is doing at regular intervals
+
+ground-truth for 1000 video-clip; 5 individuals for labelling
+
+that ground-truth information is not normally available to us: when we train the DS model using the EM algorithm, we will see how we can get a proxy for this in its absence.
+
+with the ground-truth, we can look at the confusion matrix
+
+___
+
+Majority Voting
+
+In order to use the data we need to achieve a consensus among the annotators: i.e. a proxy for the ground-truth. A baseline way of achieving this is through a technique known as Majority-Voting (MV).
+
+There are a significant number of instances in which the MV scheme was unable to output a label : roughly 40%.
+
+So why does MV fail so miserably? The reason for this lies in two assumptions that underlie the MV scheme. MV requires that:
+
+- All annotators are equally reliable (i.e. one annotator is not more or less consistent than the others)
+- All errors are completely random (not systematic).
+
+___
+
+THE DAWID-SKENE MODEL
+
+In the above example, if we knew for example that A2 consistently switched 4 and 5, we would be able to compensate for this in our weighting. Alternatively, if we knew that A1 was unreliable, we could discount their contribution in any prediction. The Dawid-Skene (DS) [1] model allows us to do just that in a probabilistic framework.
+
+we compute the prediction with Bayes' rule with :
+
+- pi_k prior (the more probable a behaviour is, the higher it is weighted : if we had to guess, and we know that the mouse spends 60% of the time sleeping, then our blind guess would be that it is sleeping)
+- The contribution of each annotator, according to the probability that they report what they see if the true label was z.
+
+Z_prediction = argmax_{z} ( pi_k*psi(z) )
+
+TRAINING THE MODEL
+
+Before we can apply the above scheme, we need to learn both pi  and psi. This is usually done using Maximum Likelihood (ML). 
+
+However, we have a chicken-and-egg problem here. If we knew z  (as well as u) we can estimate the parameters. This is because we could just count the observations to get our estimate of the probabilities : indeed, estimating psi  would be akin to computing the confusion matrices above.
+
+We have also seen from the previous section that if we knew pi or psi we can find out z from u.
+
+
+It turns out that there is a very elegant solution in the form of the Expectation Maximisation (EM) algorithm.
+
+In the E-Step we compute the probabilities over z  (which we call responsibilities) from the observations and our latest estimate of the parameters.
+
+This is just a normalised version of Eq. (1) : the normaliser is so that the values sum up to 1 and we have a valid probability.
+
+We implement this in the parallel_compute() method within the DawidSkene child class (there are some indirections in the code which have to do with an efficient implementation using numba).
+
+In the M-Step we use the estimated z  (and our knowledge of u) to update our parameters pi and psi.
+
+This is just counting observations for each possible z : however, since we do not know the z  in actual fact, we ‘weight’ the contribution of each by its responsibility  (the probabilities over z) gamma_z.
+
+In effect, it is also good practice to add Laplace smoothing to the counts: i.e. when counting the observations, we add a small number (usually 1) to each possible observation.
+
+EVALUATION
+
+With that in mind, let us go ahead and apply the DS model to our problem, by using the DawidSkeneIID implementation from my repository. This requires some settings :
+
+We will use a Laplace count of 1.0 for all parameters (passed as parameter prior).
+
+As with any iterative method, we need to initialise the parameters (starts argument), and picking good starting points makes a huge difference. This is easy for pi: we just pick a random distribution, making sure it sums to one (we will use the dirichlet random generator from numpy).
+
+For psi, we initialise the matrices to be diagonal, since we assume that most of the annotators are consistent and correct: note that this will not prevent the model from learning about the inconsistencies in some of them, as we shall see – it will however avoid the label-switching problem which is inherent in most latent-variable models!
+
+We also specify a prediction tolerance (within the initialiser): this allows the model to offer an ‘unsure’ label (NaN) when the confidence is below a threshold. If we set this to more than 0.5, this will also prevent it outputting a prediction when two or more labels have the same probability.
+
+
+The DS model is able to provide a ‘confident’ label for a larger percentage of cases : 95%.
+
+___
+
+MAJORITY VOTE AS DAWID-SKENE
+
+As a final part to this blog, we shall see how we can give a probabilistic interpretation to the MV model by using the DS framework.
+
+The key difference to note is that MV has no notion of training, and instead, the parameters are fixed. This is because MV models the data according to the following assumptions:
+
+There is no notion of a prior distribution (pi) over the latent states: put differently, pi is a constant (uniform) distribution.
+
+Each annotator is perfectly reliable and there are no systematic errors.
+
+This would normally be encoded by an identity matrix, where the probability of the annotator outputing a label u is 1 if the true label z = u and 0 otherwise.
+
+All annotators are equally reliable, and hence their psi matrices are equal.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
