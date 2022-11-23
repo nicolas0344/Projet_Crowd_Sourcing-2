@@ -26,3 +26,28 @@ for col in range(5):
 #from mpctools.extensions import mplextpip pb du package lapsolver 
 #(pb de setup.py : Building wheel for lapsolver (setup.py) ... error)
 
+#%%
+import statistics
+set = [1,2,3,4,5,6]
+statistics.mode(set)
+import numpy as np
+
+def majority_vote(annotations):
+    """
+    Majority Vote Method
+ 
+    :param annotations: The annotations (Samples by Labels): dataframe
+    :return: Majority-Vote for each row
+    """
+    mode = annotations.mode(axis='columns', dropna=True).astype(float)
+    #return a data frame with choices for each row
+    return np.where(mode.count(axis='columns') == 1, mode[0], np.NaN)
+    #return index of respons under condition one choice is possible, set Nan else
+data['MV'] = majority_vote(data[['A0', 'A1', 'A2', 'A3', 'A4']])
+data['MV'].count()
+
+from sklearn.metrics import accuracy_score
+# Remove NaNs.
+sub_data_mv = data[['GT', 'MV']].dropna(axis='index', how='any')
+accuracy_mv = accuracy_score(sub_data_mv['GT'].astype(int), sub_data_mv['MV'].astype(int))
+
