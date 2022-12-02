@@ -54,7 +54,6 @@ p = [0]*len(labels)
 
 # p[j] : in theory probability that a random image has the label j
 
-
 ########################################
 
 # Initialisation of T :
