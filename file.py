@@ -39,13 +39,12 @@ PI = np.zeros(( (len(labels)),len(labels) ))
 # print(np.shape(PI))
 # (10, 10)
 
-# p[j][l] : in theory probability that the observer has given the label l
+# PI[j][l] : in theory probability that the observer has given the label l
 # where j is the right label
 
 T = np.zeros(((len(X)),len(labels)))
 # print(np.shape(T))
 # (10 000, 10)
-
 # T[i][j] : in theory 1 if j is the correct label for i
 
 p = [0]*len(labels)
@@ -60,14 +59,30 @@ p = [0]*len(labels)
 
 for i in range(len(T)):
     for j in range(len(T[0])):
-        T[i][j] = 0
+        T[i][j] = 0.5
 
 nb_iter = 100
+J = len(p) ; I = len(X)
 
 for n in range(nb_iter):
-    0
-    # calculation of pi
 
-    # calculation of p
+    # calculation of pi :
+    for j in range(J):
+        TN = 0
+        for l in range(J):
+            sum = 0
+            for i in range(I):
+                sum += (T[i][j])*(N[i][l])
+            PI[j][l] = sum
+            TN += sum
+        for l in range(J):
+            PI[j][l] = PI[j][l]/TN
+
+    # calculation of p :
+    for j in range(J):
+        sum = 0
+        for i in range(I):
+            sum += T[i][j]
+        p[j]= sum / len(T)
 
 
