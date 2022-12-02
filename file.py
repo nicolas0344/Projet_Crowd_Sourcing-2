@@ -75,8 +75,8 @@ for n in range(nb_iter):
                 sum += (T[i][j])*(N[i][l])
             PI[j][l] = sum
             TN += sum
-        for l in range(J):
-            PI[j][l] = PI[j][l]/TN
+        # for l in range(J):
+        #     PI[j][l] = PI[j][l]/TN
 
     # calculation of p :
     for j in range(J):
