@@ -61,28 +61,31 @@ for i in range(len(T)):
     for j in range(len(T[0])):
         T[i][j] = 0.5
 
-nb_iter = 100
+nb_iter = 10
 J = len(p) ; I = len(X)
 
-for n in range(nb_iter):
+# for n in range(nb_iter):
 
-    # calculation of pi :
-    for j in range(J):
-        TN = 0
-        for l in range(J):
-            sum = 0
-            for i in range(I):
-                sum += (T[i][j])*(N[i][l])
-            PI[j][l] = sum
-            TN += sum
-        # for l in range(J):
-        #     PI[j][l] = PI[j][l]/TN
+#     # calculation of pi :
+#     for j in range(J):
 
-    # calculation of p :
-    for j in range(J):
-        sum = 0
-        for i in range(I):
-            sum += T[i][j]
-        p[j]= sum / len(T)
+#         print("iter "+str(n)+" j "+str(j))
+
+#         TN = 0
+#         for l in range(J):
+#             sum = 0
+#             for i in range(I):
+#                 sum += (T[i][j])*(N[i][l])
+#             PI[j][l] = sum
+#             TN += sum
+#         # for l in range(J):
+#         #     PI[j][l] = PI[j][l]/TN
+
+#     # calculation of p :
+#     for j in range(J):
+#         sum = 0
+#         for i in range(I):
+#             sum += T[i][j]
+#         p[j]= sum / len(T)
 
 

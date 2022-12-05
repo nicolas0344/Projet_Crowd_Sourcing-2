@@ -32,3 +32,22 @@ def display(image,label,labels):
 
     plt.title(labels[label])
     plt.show()
+
+
+# to generate a "false" observer with the ground truth :
+
+def observer(X,Y):
+
+    N = np.zeros(((len(X)),len(Y)))
+    
+    for i in range(len(X)):
+
+        true_label = Y[i]
+
+        N[i][true_label] = 10
+
+        for l in range(len(Y)):
+            if l!=true_label :
+              N[i][l] = 1
+
+    return N
