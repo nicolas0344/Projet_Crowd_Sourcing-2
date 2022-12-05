@@ -6,15 +6,15 @@ user = "au"
 
 # 
 
-path_to_Github_folder, path_to_project, path_to_data = paths(user)
-os.chdir(path_to_data)
+path_to_Github_folder, path_to_project, path_to_CIFAR10 = paths(user)
+os.chdir(path_to_CIFAR10)
 # print(os.listdir())
 
 # Let's work on data_batch_1
 
-file = os.path.join(path_to_data,"data_batch_1")
+file = os.path.join(path_to_CIFAR10,"test_batch")
 data = unpickle(file)
-meta_file = os.path.join(path_to_data,"batches.meta")
+meta_file = os.path.join(path_to_CIFAR10,"batches.meta")
 meta = unpickle(meta_file)
 
 labels = meta['label_names']
@@ -27,6 +27,9 @@ X = data['data']
 # (10 000, 3072)
 Y = data['labels']
 # 10 000
+
+n = 9911 #random.randrange(0,len(X))
+display(X[n],Y[n],labels)
 
 N = np.zeros(((len(X)),len(labels)))
 # print(np.shape(N))
@@ -63,28 +66,28 @@ for i in range(len(T)):
 nb_iter = 10
 J = len(p) ; I = len(X)
 
-# for n in range(nb_iter):
+for n in range(nb_iter):
 
-#     # calculation of pi :
-#     for j in range(J):
+    # calculation of pi :
+    for j in range(J):
 
-#         print("iter "+str(n)+" j "+str(j))
+        print("iter "+str(n)+" j "+str(j))
 
-#         TN = 0
-#         for l in range(J):
-#             sum = 0
-#             for i in range(I):
-#                 sum += (T[i][j])*(N[i][l])
-#             PI[j][l] = sum
-#             TN += sum
-#         # for l in range(J):
-#         #     PI[j][l] = PI[j][l]/TN
+        TN = 0
+        for l in range(J):
+            sum = 0
+            for i in range(I):
+                sum += (T[i][j])*(N[i][l])
+            PI[j][l] = sum
+            TN += sum
+        # for l in range(J):
+        #     PI[j][l] = PI[j][l]/TN
 
-#     # calculation of p :
-#     for j in range(J):
-#         sum = 0
-#         for i in range(I):
-#             sum += T[i][j]
-#         p[j]= sum / len(T)
+    # calculation of p :
+    for j in range(J):
+        sum = 0
+        for i in range(I):
+            sum += T[i][j]
+        p[j]= sum / len(T)
 
 

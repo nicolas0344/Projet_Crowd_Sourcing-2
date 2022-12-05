@@ -8,6 +8,8 @@
 
 ## Documentation :
 
+#
+
 CIFAR 10 :
 https://www.cs.toronto.edu/~kriz/cifar.html
 
@@ -21,3 +23,13 @@ There are 50 000 training images and 10 000 test images :
 
 Tutorial to load CIFAR-10 :
 https://www.binarystudy.com/2021/09/how-to-load-preprocess-visualize-CIFAR-10-and-CIFAR-100.html#download
+
+#
+
+CIFAR 10h : https://github.com/jcpeterson/cifar-10h
+
+CIFAR-10h is a dataset of labels reflecting human perceptual uncertainty for the 10 000 images CIFAR-10 test set.
+
+- data/cifar10h-counts.npy - 10 000 x 10 numpy matrix containing human classification counts (out of ~50) for each image and class
+
+- data/cifar10h-probs.npy - 10000 x 10 numpy matrix containing normalized human classification counts (probabilities) for each image and class.

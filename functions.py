@@ -3,6 +3,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import random
+import pandas as pd
 
 # to load the path of the working folder :
 
@@ -14,13 +16,13 @@ def paths(user):
         path_to_Github_folder = os.path.join(path_to_documents,"Github")
 
         path_to_project = os.path.join(path_to_Github_folder,"Projet_Crowd_Sourcing")
-        path_to_data = os.path.join(path_to_documents,"CIFAR10","cifar-10-python","cifar-10-batches-py")
+        path_to_CIFAR10 = os.path.join(path_to_documents,"CIFAR10","cifar-10-python","cifar-10-batches-py")
 
     if user == "nicolas" :
 
-        print("mets ton chemin ici")
+        print("mets tes chemins ici")
 
-    return path_to_Github_folder, path_to_project, path_to_data
+    return path_to_Github_folder, path_to_project, path_to_CIFAR10
 
 # to load CIFAR 10 :
 
@@ -43,6 +45,7 @@ def display(image,label,labels):
 
 
 # to generate a "false" observer with the ground truth :
+# useless if we use cifar10h
 
 def observer(X,Y):
 
@@ -59,3 +62,21 @@ def observer(X,Y):
               N[i][l] = 1
 
     return N
+
+# to get the counts matrix of an observer
+
+def annotator_matrix(annotator_id,path_to_project):
+
+    os.chdir(path_to_project)
+    df = pd.read_csv("cifar10h-raw.csv")
+
+    i = annotator_id
+
+    if i<0 or i> 2570:
+        raise ValueError(
+            "annotator_id not in [0:2570] dear friend"
+            )
+
+    print(df.loc[df['annotator_id'] == annotator_id,"chosen_label"])
+
+    return i
