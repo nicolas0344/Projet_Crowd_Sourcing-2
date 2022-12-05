@@ -6,8 +6,7 @@ user = "au"
 
 # 
 
-path_to_Github_folder, path_to_project = paths(user)
-path_to_data = os.path.join(path_to_project,"cifar-10-python","cifar-10-batches-py")
+path_to_Github_folder, path_to_project, path_to_data = paths(user)
 os.chdir(path_to_data)
 # print(os.listdir())
 

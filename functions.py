@@ -7,12 +7,20 @@ import os
 # to load the path of the working folder :
 
 def paths(user):
+
     if user == "a" or user =="au" or user == "aurelien" :
-        path_to_Github_folder = os.path.join('C:','\\Users','lyz50',"Documents","Github")
+
+        path_to_documents = os.path.join('C:','\\Users','lyz50',"Documents")
+        path_to_Github_folder = os.path.join(path_to_documents,"Github")
+
         path_to_project = os.path.join(path_to_Github_folder,"Projet_Crowd_Sourcing")
+        path_to_data = os.path.join(path_to_documents,"CIFAR10","cifar-10-python","cifar-10-batches-py")
+
     if user == "nicolas" :
+
         print("mets ton chemin ici")
-    return path_to_Github_folder, path_to_project
+
+    return path_to_Github_folder, path_to_project, path_to_data
 
 # to load CIFAR 10 :
 
