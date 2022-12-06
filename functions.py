@@ -77,6 +77,7 @@ def annotator_matrix(annotator_id,path_to_project):
             "annotator_id not in [0:2570] dear friend"
             )
 
-    print(df.loc[df['annotator_id'] == annotator_id,"chosen_label"])
+    # print(df.loc[df['annotator_id'] == annotator_id,"chosen_label"])
+    print(df.loc[df['image_filename'] == "cabin_cruiser_s_000814.png"])
 
     return i

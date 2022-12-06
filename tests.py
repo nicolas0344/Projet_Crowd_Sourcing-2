@@ -111,15 +111,15 @@ if show == True :
     # print(np.shape(probs))
     # (10 000, 10)
 
-    # print(counts[1:5])
-    # print(df_probs[1:5])
+    print(df_counts[1:10])
+    # print(df_probs[1:10])
 
     df = pd.read_csv("cifar10h-raw.csv")
 
     # print(len(df))
     # 539 910
 
-    print(df.columns)
+    # print(df.columns)
 
     print(df["annotator_id"].unique())
 
@@ -133,7 +133,7 @@ if show == True :
 
 # Test of the annotator_matrix function :
 
-show = True
+show = 0
 
 if show == True :
     
@@ -142,3 +142,20 @@ if show == True :
     result = annotator_matrix(annotator_id,path_to_project)
 
     print(result)
+
+
+os.chdir(path_to_project)
+df = pd.read_csv("cifar10h-raw.csv")
+
+#print(len(df))
+
+print(
+    len(
+        df["image_filename"].unique()
+        )
+    )
+
+probs = np.load("cifar10h-probs.npy")
+df_probs = pd.DataFrame(probs)
+
+print(len(df_probs))
