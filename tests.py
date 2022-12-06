@@ -133,7 +133,7 @@ if show == True :
 
 # Test of the annotator_matrix function :
 
-show = 0
+show = False
 
 if show == True :
     
@@ -143,19 +143,36 @@ if show == True :
 
     print(result)
 
+# Tests divers :
 
-os.chdir(path_to_project)
-df = pd.read_csv("cifar10h-raw.csv")
+show = 0
 
-#print(len(df))
+    if show == True :
 
-print(
-    len(
-        df["image_filename"].unique()
+    os.chdir(path_to_project)
+    df = pd.read_csv("cifar10h-raw.csv")
+
+    #print(len(df))
+
+    print(
+        len(
+            df["image_filename"].unique()
+            )
         )
-    )
 
-probs = np.load("cifar10h-probs.npy")
-df_probs = pd.DataFrame(probs)
+    probs = np.load("cifar10h-probs.npy")
+    df_probs = pd.DataFrame(probs)
 
-print(len(df_probs))
+    print(len(df_probs))
+
+    # The order of the 10,000 labels matches the original CIFAR-10 test set order.
+    # ???
+
+    # print(df.loc[df['annotator_id'] == 0,"image_filename"])
+    # il y en a seulement 200 !
+
+    # print(
+    #     len(
+    #         df.loc[df['annotator_id'] == 0,"image_filename"].unique()
+    #         )
+    #     )
