@@ -85,7 +85,7 @@ if show == True :
 
 # Let's look at CIFAR10h :
 
-show = False
+show = 1
 
 if show == True :
 
@@ -112,7 +112,7 @@ if show == True :
     # (10 000, 10)
 
     print(df_counts[1:10])
-    # print(df_probs[1:10])
+    print(df_probs[1:10])
 
     df = pd.read_csv("cifar10h-raw.csv")
 
@@ -147,7 +147,7 @@ if show == True :
 
 show = 0
 
-    if show == True :
+if show == True :
 
     os.chdir(path_to_project)
     df = pd.read_csv("cifar10h-raw.csv")
