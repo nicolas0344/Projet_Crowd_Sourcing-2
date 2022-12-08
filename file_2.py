@@ -45,9 +45,9 @@ idx = df['cifar10_test_test_idx'].unique()
 K = len(df['annotator_id'].unique())
 # 2571 annotators
 
-PI_k = []
+PI = []
 for i in range(K):
-    PI_k += [np.zeros(((len(labels)),len(labels) ))]
+    PI += [np.zeros(((len(labels)),len(labels) ))]
 
 # print(np.shape(PI_k[0]))
 # (10, 10)
@@ -68,19 +68,21 @@ p = [0]*len(labels)
 
 #%%
 W = []
-for i in range(len(idx)):
+for k in range(K):
 
     W += [
-        df.loc[abs(df['cifar10_test_test_idx'] - i)<10-3,
-        ["annotator_id","chosen_label"]].astype("int") 
+        df.loc[abs(df['annotator_id'] - k)<10-3,
+        ["cifar10_test_test_idx","chosen_label"]].astype("int") 
         ]
 
-    if i % 100 == 0:
-        print("i = ",i)
+    if k % 100 == 0:
+        print("k = ",k)
 
 #%%
 print(W[0])
-print(8 in W[0]["chosen_label"].unique())
+#
+print(W[0]["cifar10_test_test_idx"][0])
+#print(0 in W[0]["chosen_label"].unique())
 
 #%%
 
@@ -93,32 +95,28 @@ for i in range(len(T)):
 nb_iter = 10
 J = len(p) ; I = len(X)
 
-for n in range(nb_iter):
+for k in range(1):
 
-    for k in range(K):
+    for n in range(nb_iter):
 
         # calculation of pi :
         for j in range(J):
 
             print("iter "+str(n)+" j "+str(j))
 
-            TN = 0
             for l in range(J):
+
                 sum = 0
-                for i in range(I):
 
-                    # N_(i,l) = number of times that the observer has given the label l to the i_th image
-                    # 0 or 1 in or case
-                    if (l in W[i]["chosen_label"].unique()):
-                        
-                        sum += T[i][j] # (T[i][j])*N_(i,l) avec N_(i,l) = 1
+                for s in range(len(W[k])):
 
-                PI_k[k][j][l] = sum
-                TN += sum
+                    # si i a été labellé par l'annotateur k
+                    i_0 = W[k]["cifar10_test_test_idx"][s]
+                    sum += T[i_0][j]
+                    
+                    # (T[i_0][j])*N_(i_0,l) avec N_(i_0,l) = 1
 
-            for l in range(J):
-
-                PI_k[k][j][l] = PI_k[k][j][l]/TN
+                PI[k][j][l] = sum
 
         # calculation of p :
 
