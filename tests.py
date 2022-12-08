@@ -111,68 +111,29 @@ if show == True :
     # print(np.shape(probs))
     # (10 000, 10)
 
-    print(df_counts[1:10])
-    print(df_probs[1:10])
+    # print(df_counts[1:10])
+    # print(df_probs[1:10])
 
-    df = pd.read_csv("cifar10h-raw.csv")
+    # df = pd.read_csv("cifar10h-raw.csv",na_values="-99999")
+    # df.dropna(inplace=True)
+    # print(len(df))
+    # print(len(df['image_filename'].unique()))
+    # print(len(df['cifar10_test_test_idx'].unique()))
+    # 514 200
+    # 10 000
+    # 10 000
 
     # print(len(df))
     # 539 910
 
     # print(df.columns)
 
-    print(df["annotator_id"].unique())
-
-    print(
-        len(
-            df["annotator_id"].unique()
-            )
-        )
-
-    # 2571 annotators
-
-# Test of the annotator_matrix function :
-
-show = False
-
-if show == True :
-    
-    annotator_id = 0
-
-    result = annotator_matrix(annotator_id,path_to_project)
-
-    print(result)
-
-# Tests divers :
-
-show = 0
-
-if show == True :
-
-    os.chdir(path_to_project)
-    df = pd.read_csv("cifar10h-raw.csv")
-
-    #print(len(df))
-
-    print(
-        len(
-            df["image_filename"].unique()
-            )
-        )
-
-    probs = np.load("cifar10h-probs.npy")
-    df_probs = pd.DataFrame(probs)
-
-    print(len(df_probs))
-
-    # The order of the 10,000 labels matches the original CIFAR-10 test set order.
-    # ???
-
-    # print(df.loc[df['annotator_id'] == 0,"image_filename"])
-    # il y en a seulement 200 !
+    # print(df["annotator_id"].unique())
 
     # print(
     #     len(
-    #         df.loc[df['annotator_id'] == 0,"image_filename"].unique()
+    #         df["annotator_id"].unique()
     #         )
     #     )
+
+    # 2571 annotators
