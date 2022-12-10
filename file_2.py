@@ -49,7 +49,7 @@ PI = []
 for i in range(K):
     PI += [np.zeros(((len(labels)),len(labels) ))]
 
-# print(np.shape(PI_k[0]))
+# print(np.shape(PI[0]))
 # (10, 10)
 
 # PI_k[j][l] : in theory probability that the observer has given the label l
@@ -79,6 +79,7 @@ for k in range(K):
         print("k = ",k)
 
 #%%
+print(len(W))
 print(W[0])
 #
 print(W[0]["cifar10_test_test_idx"][0])
@@ -113,18 +114,18 @@ for k in range(1):
                     # si i a été labellé par l'annotateur k
                     i_0 = W[k]["cifar10_test_test_idx"][s]
                     sum += T[i_0][j]
-                    
+
                     # (T[i_0][j])*N_(i_0,l) avec N_(i_0,l) = 1
 
-                PI[k][j][l] = sum
+                #PI[k][j][l] = sum
 
         # calculation of p :
 
-        for j in range(J):
-            sum = 0
-            for i in range(I):
-                sum += T[i][j]
-            p[j]= sum / len(T)
+        # for j in range(J):
+        #     sum = 0
+        #     for i in range(I):
+        #         sum += T[i][j]
+        #     p[j]= sum / len(T)
 
 
 
