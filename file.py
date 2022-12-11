@@ -1,32 +1,32 @@
 #%%
 from functions import *
-
+  
 #
-
-user = "au"
-
+  
+user = "nicolas"
+  
 # 
-
+  
 path_to_Github_folder, path_to_project, path_to_CIFAR10 = paths(user)
 os.chdir(path_to_CIFAR10)
 # print(os.listdir())
-
+  
 # Let's work on data_batch_1
-
-file = os.path.join(path_to_CIFAR10,"test_batch")
-data = unpickle(file)
+  
+file = os.path.join(path_to_CIFAR10,"test_batch")  
+data = unpickle(file) #images 
 meta_file = os.path.join(path_to_CIFAR10,"batches.meta")
-meta = unpickle(meta_file)
-
-labels = meta['label_names']
-
-X = data['data']
+meta = unpickle(meta_file)  #labels
+  
+labels = meta['label_names']  #nom du label 
+  
+X = data['data']   # images couleurs
 print(X)
 # (10 000, 3072)
-Y = data['labels']
+Y = data['labels']   # numéro de labélisation 
 # 10 000
-
-n = 9911 #random.randrange(0,len(X))
+  
+n = 9912 #random.randrange(0,len(X))
 display(X[n],Y[n],labels)
 
 #%%
