@@ -33,15 +33,14 @@ display(X[n],Y[n],labels)
 os.chdir(path_to_project)
 
 df = pd.read_csv("cifar10h-raw.csv",na_values="-99999")
-df.dropna(inplace=True)
+df.dropna(inplace=True)  # delete annotators/spamers
 
 # print(len(df))
 # print(len(df['cifar10_test_test_idx'].unique()))
 # 514 200
 # 10 000
 
-idx = df['cifar10_test_test_idx'].unique()
-
+idx = df['cifar10_test_test_idx'].unique()  #images numbers
 K = len(df['annotator_id'].unique())
 # 2571 annotators
 

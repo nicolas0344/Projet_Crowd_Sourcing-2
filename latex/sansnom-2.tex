@@ -1,0 +1,248 @@
+%%% packages %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+\documentclass[frenchb]{report}
+%\usepackage{natbib}
+\usepackage[toc,page]{appendix}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[french]{babel}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\usepackage{vmargin}
+\usepackage{xcolor}
+\usepackage{bbm}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage{systeme}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{pifont}
+\usepackage{textcomp}
+\usepackage{calrsfs}
+\usepackage[T1]{fontenc}
+\usepackage[toc,page]{appendix}
+\usepackage{lipsum}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{adforn}
+\usepackage{float}
+\usepackage{subfig}
+% Les packages necessaires pour faire le pseudo code
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{algorithm}
+\usepackage{algorithmic}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Je renomme les commandes en français
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\algorithmicrequire}{\textbf{Entrée(s) :}}
+\renewcommand{\algorithmicreturn}{\textbf{retourner}}
+\renewcommand{\algorithmicensure}{\textbf{Initialisation ;}}
+\renewcommand{\algorithmicwhile}{\textbf{Tant que}}
+\renewcommand{\algorithmicdo}{\textbf{Initialisation}}
+\renewcommand{\algorithmicendwhile}{\textbf{fin du Tant que ;}}
+\renewcommand{\algorithmicend}{\textbf{fin}}
+\renewcommand{\algorithmicif}{\textbf{si}}
+\renewcommand{\algorithmicendif}{\textbf{fin du si}}
+\renewcommand{\algorithmicelse}{\textbf{sinon}}
+\renewcommand{\algorithmicelsif}{\textbf{fin du sinon}}
+\renewcommand{\algorithmicthen}{\textbf{alors}}
+\renewcommand{\algorithmicthen}{\textbf{Étape E}}
+\renewcommand{\algorithmicthen}{\textbf{Étape M}}
+\renewcommand{\algorithmicfor}{\textbf{pour}}
+\renewcommand{\algorithmicforall}{\textbf{pour tout}}
+\renewcommand{\algorithmicto}{\textbf{à}}
+\renewcommand{\algorithmicendfor}{\textbf{fin du pour}}
+\renewcommand{\algorithmicdo}{\textbf{faire}}
+\renewcommand{\algorithmicloop}{\textbf{boucler}}
+\renewcommand{\algorithmicendloop}{\textbf{fin de la boucle}}
+\renewcommand{\algorithmicrepeat}{\textbf{répéter}}
+\renewcommand{\algorithmicuntil}{\textbf{jusqu’à}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\hoffset}{-18pt}        
+\setlength{\oddsidemargin}{0pt} % Marge gauche sur pages impaires
+\setlength{\evensidemargin}{9pt} % Marge gauche sur pages paires
+\setlength{\marginparwidth}{54pt} % Largeur de note dans la marge
+\setlength{\textwidth}{481pt} % Largeur de la zone de texte (17cm)
+\setlength{\voffset}{-18pt} % Bon pour DOS
+\setlength{\marginparsep}{7pt} % Séparation de la marge
+\setlength{\topmargin}{0pt} % Pas de marge en haut
+\setlength{\headheight}{13pt} % Haut de page
+\setlength{\headsep}{10pt} % Entre le haut de page et le texte
+\setlength{\footskip}{27pt} % Bas de page + séparation
+\setlength{\textheight}{708pt} % Hauteur de la zone de texte (25cm)
+\usepackage{hyperref}
+\lstset{%
+            inputencoding=utf8,
+                extendedchars=true,
+                literate=%
+                {é}{{\'e}}{1}%
+                {è}{{\`e}}{1}%
+                {à}{{\`a}}{1}%
+                {ç}{{\c{c}}}{1}%
+                {œ}{{\oe}}{1}%
+                {ù}{{\`u}}{1}%
+                {É}{{\'E}}{1}%
+                {È}{{\`E}}{1}%
+                {À}{{\`A}}{1}%
+                {Ç}{{\c{C}}}{1}%
+                {Œ}{{\OE}}{1}%
+                {Ê}{{\^E}}{1}%
+                {ê}{{\^e}}{1}%
+                {î}{{\^i}}{1}%
+                {ô}{{\^o}}{1}%
+                {û}{{\^u}}{1}%
+                {ë}{{\¨{e}}}1
+                {û}{{\^{u}}}1
+                {â}{{\^{a}}}1
+                {Â}{{\^{A}}}1
+                {Î}{{\^{I}}}1
+        }
+    
+    
+\lstset{language=R,
+  backgroundcolor=\color{lightgray},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument %MidnightBlue
+   basicstyle=\small\ttfamily\color{white},        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{SpringGreen},    % comment style
+  deletekeywords={data,frame,length,as,character},           % if you want to delete keywords from the given language
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+   keywordstyle=\color{Peach},       % keyword style
+  morekeywords={kable,*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  %numberstyle=\tiny\color{gray}, % the style that is used for the line-numbers
+  rulecolor=\color{white},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+      % string literal style
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  title=\lstname,                  % show the filename of files included with \lstinputlisting; also try caption instead of title
+  mathescape=true,
+  escapechar=|
+  }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%        
+
+
+        
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+%%% commandes mise en page %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%        
+\newcommand{\ld}{\log_{2}}
+\newcommand{\R}{\mathbbm{R}}
+\newcommand{\N}{\mathbbm{N}}
+\newcommand{\1}{\mathbbm{1}}
+\newcommand{\E}{\mathbbm{E}}
+\newcommand{\V}{\mathbbm{V}}
+\newcommand{\prob}{\mathbbm{P}}
+\newcommand{\Nc}{\mathcal{N}}
+\newcommand{\Cc}{\mathcal{C}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\Xti}{\widetilde{X_i}}
+\newcommand{\Xtj}{\widetilde{X_j}}
+\newcommand{\Xn}{\overline{X_n}}
+\newcommand{\gn}{\hat{g_n}}
+\newcommand{\n}{\mathcal{N}}
+\newcommand{\lv}{\mathcal{L}}
+\newcommand{\thetat}{\tilde{\theta}}
+
+\newcommand{\console}[1]{\colorbox{black}{\begin{minipage}[c]{1\linewidth}\textcolor{white}{\texttt{#1}}\end{minipage}}}
+
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Théorème}
+\newtheorem{cor}{Corollaire}
+\newtheorem{lem}{Lemme}
+\newtheorem{hyp}{Hypothèse}
+\theoremstyle{definition}\newtheorem{defn}{Définition}
+\theoremstyle{definition}\newtheorem{exm}{Exemple}
+\theoremstyle{definition}\newtheorem{nota}{Notation}
+\theoremstyle{definition}\newtheorem{rem}{Remarque}
+
+\renewcommand{\qedsymbol}{\adfhangingflatleafright}
+
+
+\begin{document}
+%%% Pour l'annexe
+\def\appendixpage{\vspace*{8cm}
+\begin{center}
+\Huge\textbf{Annexes}
+\end{center}
+}
+\def\appendixname{Annexe}%
+%%%
+
+%%% Page de garde %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+\begin{center}
+\includegraphics[scale=0.6]{logo.png}
+\hfill
+\includegraphics[scale=0.35]{fds_logo.png}\\[3cm]
+\linespread{1.2}\huge {\bfseries Projet Master 2 SSD }\\[0.5cm]
+\linespread{1.2}\LARGE {\bfseries Crowd-Sourcing}\\[1.5cm]
+\linespread{1}
+
+{\large Rédigé par\\}
+{\Large \textsc{pralon} Nicolas}\\
+{\Large \textsc{thiriet} Aurelien}\\
+{\large \emph{Encadrant :} Joseph \textsc{Salmon}}\\[1.5cm] 
+
+\includegraphics[scale=0.7]{imag_logo.png}
+
+\end{center}
+\end{titlepage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter*{Introduction}
+\addcontentsline{toc}{part}{Introduction}
+
+En science appliquée et notamment en statistique inférentielle, le recueil de données constitue une étape primordiale, il nous permet d'élaborer des modèles et de construire des estimateurs. Il convient à ce titre d'être attentif à l'observation des données.
+
+Dans un cadre idéal, les modèles construit nécessitent un faible nombre de données dont l'observation peut être réalisée par des professionnels du domaine concerné. Toujours est-il que ces situations sont peu courantes et l'observation, par ces experts, d'un grand nombre de données n'est pas envisageable. C'est à ce titre que le "Crowd-Sourcing" est couramment utilisé, puisqu'un grand nombre d'intervenant permet de construire la base de donnée nécessaire. Toute fois des erreurs d'obervations quant à la nature des données peut-être commisent, il est alors essentiel de s'accorder sur une décision.
+
+C'est à ce problème, que ce projet propose de présenter différentes solutions. Nous étudierons le modèle construit par DAWID et SKENE.
+
+
+\newpage
+
+\chapter{Modélisation du problème}
+
+Dans ce chapitre, nous établissons le cadre nous permettant de traiter le problème de décision lorsque plusieurs obervations d'une même donnée sont fournit. 
+
+Nous définissons alors l'exemple suivant : 
+
+\begin{itemize}[label=\adfflowerleft]
+	\item On dispose d'un esemble de patient $\left\{1,\cdots,I\right\}$ tous atteint d'une maladie, et on suppose le vecteur aléatoire $(X_i)_{i \in \{1,\cdots,I \}}$, tel que $\forall i$, $X_i$ à valeur dans $\left\{1,\cdots,J\right\}$ représente la maladie du partient $i$.
+	\item On dispose egalement d'un esemble de médecin $\{1, \cdots, K\}$, et on considère $\forall i \in \{1, \cdots, I\}$ le vecteur aléatoire $(Y^k_i)_{k \in \{1, \cdots, K\}}$ le diagnostique du médecin $k$ au patient $i$, $Y^k_i$ à valeur dans $\{1, \cdots, J\}$. 
+\end{itemize}
+
+Afin de diagnostiquer le meilleur traitement à chaque patient, on doit leur diagnostiquer une maladie. Toute fois nous pouvons nous retrouver dans la situation où le diagnostique différent d'un médecin à un autre, pour diverses raisons; erreur de mesure, erreur d'annotation, fatigue. Il convient dans ce cas de trouver une solution à la question : quelle maladie est atteint chaque patient ? \\
+
+Dans le but de simplifier l'approche, nous considérons dans un premier temps le cas d'un medecin et d'un patient, nous pouvons également émettre l'hypothèse vraisemblable suivante : 
+
+\begin{hyp}
+	Nous supposons que, $\forall j,k \in \llbracket 1,J \rrbracket \times \llbracket 1,K \rrbracket$, $Y^k_i | X_i = \alpha_i \sim Multinomiale((\pi^k_{\alpha_i,j}),1)$
+\end{hyp}
+
+
+
+\end{document}
