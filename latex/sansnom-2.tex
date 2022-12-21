@@ -237,11 +237,27 @@ Nous définissons alors l'exemple suivant :
 
 Afin de diagnostiquer le meilleur traitement à chaque patient, on doit leur diagnostiquer une maladie. Toute fois nous pouvons nous retrouver dans la situation où le diagnostique différent d'un médecin à un autre, pour diverses raisons; erreur de mesure, erreur d'annotation, fatigue. Il convient dans ce cas de trouver une solution à la question : quelle maladie est atteint chaque patient ? \\
 
-Dans le but de simplifier l'approche, nous considérons dans un premier temps le cas d'un medecin et d'un patient, nous pouvons également émettre l'hypothèse vraisemblable suivante : 
+Dans le but de simplifier l'approche, nous considérons dans un premier temps le cas d'un medecin et d'un patient, nous pouvons également émettre l'hypothèse vraisemblable suivante : \\
 
 \begin{hyp}
-	Nous supposons que, $\forall j,k \in \llbracket 1,J \rrbracket \times \llbracket 1,K \rrbracket$, $Y^k_i | X_i = \alpha_i \sim Multinomiale((\pi^k_{\alpha_i,j}),1)$
+	Nous supposons que, $\forall j,k \in \llbracket 1,J \rrbracket \times \llbracket 1,K \rrbracket$, $Y^k_i | X_i = \alpha_i \sim Multinomiale((\pi^k_{\alpha_i,j})_{j \in \llbracket 1,J \rrbracket},1)$
 \end{hyp}
+
+Sachant que le partient $i$ est atteint de la maladie $\alpha_i$, la réponse du médecin $k$ suit une loi multinomiale. Le médecin peut, ou non, commettre une érreur de mesure même en connaissant la vraie maladie du patient. \\
+
+Les paramètres $(\pi^k_{\alpha_i,j})_{j \in \llbracket 1,J \rrbracket}$ correspondent à la probabilité que le médecin $k$ diagnostique la maladie $j$ au patient $i$ sachant qu'il est atteint de la vraie maladie $\alpha_i$. On suppose que chaque médecin ne voit qu'une seule fois chaque patient.\\
+
+On ainsi
+\begin{center}
+$\prob_{Y^k_i|X_i = \alpha_i} = \displaystyle \sum_{(n^k_{i,1}, \cdots, n^k_{i,J})} \underbrace{\frac{\big(\displaystyle \sum_{j=1}^J n^k_{i,j}\big)!}{\displaystyle \prod_{j=1}^J (n^k_{i,j})!}\displaystyle \prod_{j=1}^J \big(\pi^k_{\alpha_i,j}\big)^{n^k_{i,j}}}_{\textit{densité suivant} \displaystyle \sum \delta_{(n^k_{i,1}, \cdots, n^k_{i,J})}} \delta_{(n^k_{i,1}, \cdots, n^k_{i,J})}$
+\end{center}
+
+Avec $n^k_{i,j}$ le nombre de fois que le médecin $k$ à diagnostiqué la maladie $j$ au patient $i$\\
+
+On a alors que la vraisemblance de $Y^k_i | X_i = \alpha_i$ est équivalent à $\displaystyle \prod_{j=1}^J \big(\pi^k_{\alpha_i,j}\big)^{n^k_{i,j}}$
+
+
+
 
 
 
