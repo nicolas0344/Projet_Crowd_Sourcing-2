@@ -161,6 +161,7 @@
 \newcommand{\n}{\mathcal{N}}
 \newcommand{\lv}{\mathcal{L}}
 \newcommand{\thetat}{\tilde{\theta}}
+\newcommand{\indep}{\perp \!\!\! \perp}
 
 \newcommand{\console}[1]{\colorbox{black}{\begin{minipage}[c]{1\linewidth}\textcolor{white}{\texttt{#1}}\end{minipage}}}
 
@@ -232,7 +233,8 @@ Nous définissons alors l'exemple suivant :
 
 \begin{itemize}[label=\adfflowerleft]
 	\item On dispose d'un esemble de patient $\left\{1,\cdots,I\right\}$ tous atteint d'une maladie, et on suppose le vecteur aléatoire $(X_i)_{i \in \{1,\cdots,I \}}$, tel que $\forall i$, $X_i$ à valeur dans $\left\{1,\cdots,J\right\}$ représente la maladie du partient $i$.
-	\item On dispose egalement d'un esemble de médecin $\{1, \cdots, K\}$, et on considère $\forall i \in \{1, \cdots, I\}$ le vecteur aléatoire $(Y^k_i)_{k \in \{1, \cdots, K\}}$ le diagnostique du médecin $k$ au patient $i$, $Y^k_i$ à valeur dans $\{1, \cdots, J\}$. 
+	\item On dispose egalement d'un esemble de médecin $\{1, \cdots, K\}$, et on considère $\forall i \in \{1, \cdots, I\}$ le vecteur aléatoire $(Y^k_i)_{k \in \{1, \cdots, K\}}$ le diagnostique du médecin $k$ au patient $i$, $Y^k_i$ à valeur dans $\{0,1\}^J$. 
+	\item Chaque médecin répond indépendament des autres et la maladie de chaque patient est indépendante des autres. On note l'independance 2 à 2, $(Y^k_i)_k \indep$ et $(X_i)_i \indep$
 \end{itemize}
 
 Afin de diagnostiquer le meilleur traitement à chaque patient, on doit leur diagnostiquer une maladie. Toute fois nous pouvons nous retrouver dans la situation où le diagnostique différent d'un médecin à un autre, pour diverses raisons; erreur de mesure, erreur d'annotation, fatigue. Il convient dans ce cas de trouver une solution à la question : quelle maladie est atteint chaque patient ? \\
@@ -254,10 +256,10 @@ $\prob_{Y^k_i|X_i = \alpha_i} = \displaystyle \sum_{(n^k_{i,1}, \cdots, n^k_{i,J
 
 Avec $n^k_{i,j}$ le nombre de fois que le médecin $k$ à diagnostiqué la maladie $j$ au patient $i$\\
 
-On a alors que la vraisemblance de $Y^k_i | X_i = \alpha_i$ est équivalent à $\displaystyle \prod_{j=1}^J \big(\pi^k_{\alpha_i,j}\big)^{n^k_{i,j}}$
+On a alors que la vraisemblance de $Y^k_i | X_i = \alpha_i$ est équivalent à $\displaystyle \prod_{j=1}^J \big(\pi^k_{\alpha_i,j}\big)^{n^k_{i,j}}$\\
 
 
-
+Dans le but de se ramener au cas de plusieurs patients et plusieurs médecins, on considère ici un patient $i$ et tous les médecins $(1, \cdots, K)$.
 
 
 
