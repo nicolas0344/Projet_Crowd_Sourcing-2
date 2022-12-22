@@ -259,7 +259,26 @@ Avec $n^k_{i,j}$ le nombre de fois que le médecin $k$ à diagnostiqué la malad
 On a alors que la vraisemblance de $Y^k_i | X_i = \alpha_i$ est équivalent à $\displaystyle \prod_{j=1}^J \big(\pi^k_{\alpha_i,j}\big)^{n^k_{i,j}}$\\
 
 
-Dans le but de se ramener au cas de plusieurs patients et plusieurs médecins, on considère ici un patient $i$ et tous les médecins $(1, \cdots, K)$.
+\begin{rem}
+	Ici on a une dépendance des paramètres $(\pi^k_{\alpha_i,j})$ en $k$,$j$ et $\alpha_i$ (pour le conditionnement), mais plus particulièrement en $i$ (pour le patient i).\\
+	Cela signifie que, sachant que le patient $i$ est malade de la maladie $\alpha$ et que le patient $i'$ est aussi malade de la maladie $\alpha$, la probabilité que le médecin $k$ diagnostique $j$ au patient $i$ est différente ou non, de celle où il diagnostque $j$ pour le patient $i'$. 
+	Cependant en tout état de connaissance, le médecin sachant que les deux patients sont atteint de la même maladie, la probabilité qu'il diagnostique la maladie $j$ à l'un, et $j$ à l'autre n'a lieu d'être différente. Le choix ne dépend que du médecin. 
+	On notera alors $\alpha$ à la place de $\alpha_i$.
+\end{rem}
+\bigskip
+
+
+Dans le but de se ramener au cas de plusieurs patients et plusieurs médecins, on considère ici un patient $i$ et tous les médecins $(1, \cdots, K)$.\\
+
+\begin{rem}
+	Par soucis de lisibilité on notera $\prob(Y^k_i = (n^k_{i,1}, \cdots, n^k_{i,J})|X_i = \alpha)$ par $\prob(Y^k_i|X_i = \alpha).$
+\end{rem}
+
+Pour tous les médecins on a dans ce cas : 
+\begin{center}
+	$\prob \left( \displaystyle \bigcap_{k=1}^K Y^k_i |X_i =\alpha \right) = \displaystyle \prod_{k=1}^K \prob \left(Y^k_i |X_i = \alpha \right)$, car $(Y^k_i)_k \indep$
+\end{center}
+
 
 
 
