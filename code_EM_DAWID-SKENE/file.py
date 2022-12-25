@@ -161,9 +161,10 @@ EM_stepM(EM_stepE(T_test,N_test))
     
 def EM_algo(T,N,n):
     
-    for i in range(n):
+    for i in range(n-1):
         T = EM_stepM(EM_stepE(T,N))
-    return(T)
+    p = EM_stepE(T,N)[1]
+    return(p)
 
 EM_algo(T_test,N_test,10)
 
