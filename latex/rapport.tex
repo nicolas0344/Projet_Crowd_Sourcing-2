@@ -227,6 +227,8 @@ C'est à ce problème, que ce projet propose de présenter différentes solution
 
 \chapter{Modélisation du problème}
 
+\section{Modèle Dawid-Skene}
+
 Dans ce chapitre, nous établissons le cadre nous permettant de traiter le problème de décision lorsque plusieurs obervations d'une même donnée sont fournit. 
 
 Nous définissons alors l'exemple suivant : 
@@ -260,10 +262,9 @@ On a alors que la vraisemblance de $Y^k_i | X_i = \alpha_i$ est équivalent à $
 
 
 \begin{rem}
-	Ici on a une dépendance des paramètres $(\pi^k_{\alpha_i,j})$ en $k$,$j$ et $\alpha_i$ (pour le conditionnement), mais plus particulièrement en $i$ (pour le patient i).\\
-	Cela signifie que, sachant que le patient $i$ est malade de la maladie $\alpha$ et que le patient $i'$ est aussi malade de la maladie $\alpha$, la probabilité que le médecin $k$ diagnostique $j$ au patient $i$ est différente ou non, de celle où il diagnostque $j$ pour le patient $i'$. 
-	Cependant en tout état de connaissance, le médecin sachant que les deux patients sont atteint de la même maladie, la probabilité qu'il diagnostique la maladie $j$ à l'un, et $j$ à l'autre n'a lieu d'être différente. Le choix ne dépend que du médecin. 
-	On notera alors $\alpha$ à la place de $\alpha_i$.
+	Ici on a une dépendance des paramètres $(\pi^k_{\alpha_i,j})$ en $k$,$j$ et $\alpha_i$ (pour le conditionnement), mais l'indice $i$ sert simplement à indiquer qu'on considère le patient $i$ et ne consitue pas un paramètre.\\
+	Cela signifie que, sachant que le patient $i$ est malade de la maladie $\alpha_i$ et que le patient $i'$ est malade de la maladie $\alpha_{i'}$ mais $\alpha_i = \alpha_{i'}$, la probabilité que le médecin $k$ diagnostique $j$ au patient $i$ est la même de celle où il diagnostque $j$ pour le patient $i'$. 
+	En tout état de connaissance, le médecin sachant que les deux patients sont atteint de la même maladie, la probabilité qu'il diagnostique la maladie $j$ à l'un, et $j$ à l'autre n'a pas lieu d'être différente. Il s'agit pour le médecin d'une même situation et le choix ne dépend que de lui. 
 \end{rem}
 \bigskip
 
@@ -271,14 +272,122 @@ On a alors que la vraisemblance de $Y^k_i | X_i = \alpha_i$ est équivalent à $
 Dans le but de se ramener au cas de plusieurs patients et plusieurs médecins, on considère ici un patient $i$ et tous les médecins $(1, \cdots, K)$.\\
 
 \begin{rem}
-	Par soucis de lisibilité on notera $\prob(Y^k_i = (n^k_{i,1}, \cdots, n^k_{i,J})|X_i = \alpha)$ par $\prob(Y^k_i|X_i = \alpha).$
+	Par soucis de lisibilité on notera $\prob(Y^k_i = (n^k_{i,1}, \cdots, n^k_{i,J})|X_i = \alpha_i)$ par $\prob(Y^k_i|X_i = \alpha_i).$
 \end{rem}
 
 Pour tous les médecins on a dans ce cas : 
 \begin{center}
-	$\prob \left( \displaystyle \bigcap_{k=1}^K Y^k_i |X_i =\alpha \right) = \displaystyle \prod_{k=1}^K \prob \left(Y^k_i |X_i = \alpha \right)$, car $(Y^k_i)_k \indep$
+	\begin{align*}
+		\prob \left( \displaystyle \bigcap_{k=1}^K Y^k_i |X_i =\alpha_i \right) &= \displaystyle \prod_{k=1}^K \prob \left(Y^k_i |X_i = \alpha_i \right) \textit{, car} (Y^k_i)_k \indep\\
+	&\propto \displaystyle \prod_{k=1}^K \displaystyle \prod_{j = 1}^J \left(\pi^k_{\alpha_i,j}\right)^{n^k_{i,j}}\\
+	\end{align*}
 \end{center}
 
+La vraisemblance du vecteur $(Y^k_i | X_i = \alpha_i)_k$ est équivalente à cette même valeur.\\
+
+En finalité, les résultats obervés sont ceux du vecteur $(Y^k_i)_k$ pour un patient i fixé. Toute fois, si nous avions également accès à la vraie maladie du patient, on observe dans ce cas les résultats du vecteur $((Y^k_i)_k, X_i)$.\\
+
+Intéréssons nous alors, à la probabilité $\prob \left( \left( \displaystyle \bigcap_k Y^k_i \right) \bigcap \left(X_i = \alpha_i \right) \right)$.\\
+
+On note $\forall i,j \in \{1, \cdots, J\}^2, p_j = \prob(X_i = j)$.\\
+
+\begin{center}
+	\begin{align*}
+		\prob \left( \left( \displaystyle \bigcap_k Y^k_i \right) \bigcap \left(X_i = \alpha_i \right) \right) &= \prob \left( \displaystyle \bigcap_{k = 1}^K Y^k_i |X_i = \alpha_i \right) \times \prob(X_i = \alpha_i)\\
+		& \propto p_{\alpha_i} \times \displaystyle \prod_{k=1}^K \displaystyle \prod_{j = 1}^J \left(\pi^k_{\alpha_i,j}\right)^{n^k_{i,j}}\\
+	\end{align*}
+\end{center}
+
+Plus généralement, en définissant $T_{i,l}$ la variable aléatoire telle que $T_{i,l} = 1$, si la maladie du patient $i$ est $l$ et $T_{i,l} = 0$ sinon, on a : \\
+
+\begin{center}
+	$p_{\alpha_i} \displaystyle \prod_{k=1}^K \displaystyle \prod_{j = 1}^J \left(\pi^k_{\alpha_i,j}\right)^{n^k_{i,j}} = \displaystyle \prod_{l=1}^J \left( p_l \displaystyle \prod_{k=1}^K \displaystyle \prod_{j = 1}^J \left(\pi^k_{l,j}\right)^{n^k_{i,j}} \right)^{T_{i,l}}$
+\end{center}
+
+De plus l'événement $\{X_i = \alpha_i \} = \{T_{i,\alpha_i} = 1\}$, $\forall l \in \{1, \cdots, J\}$ $T_{i,l}$ est alors connu.
+
+\newpage
+
+Il manque maintenant à se placer dans le cas où on observe les résutats des médecins pour touts les patients, et les maladies des patients.\\
+
+$\forall k, (Y^k_i) \indep X_{i'}, i' \neq i$ et $(Y^k_i)_i \indep $, on a alors $Y^k_i \indep (Y^k_{i'},X_{i'})$ puis $(Y^k_i,X_i) \indep (Y^k_{i'},X_{i'})$\\
+On a ainsi la probabilité : 
+
+\begin{center}
+	\begin{align*}
+		\prob \left( \left( \displaystyle \bigcap_i \displaystyle \bigcap_k Y^k_i \right) \cap \left( \displaystyle \bigcap_i Xi = \alpha_i \right) \right) &= \prob \left( \displaystyle \bigcap_i \left[ \left( \displaystyle \bigcap_k Y^k_i \right) \cap \left(X_i = \alpha_i\right) \right] \right)\\
+	&= \displaystyle \prod_i \prob \left( \left( \displaystyle \bigcap_k Y^k_i \right) \cap \left( X_i = \alpha_i \right) \right)\\
+	&\propto \displaystyle \prod_i^I \displaystyle \prod_{l=1}^J \left( p_l \displaystyle \prod_{k=1}^K \displaystyle \prod_{j = 1}^J \left(\pi^k_{l,j}\right)^{n^k_{i,j}} \right)^{T_{i,l}}\\
+	\end{align*}
+\end{center}
+
+La vraisemblance est également équivalente à cette même expréssion.
+
+\section{Résolution du problème}
+
+Pour faire un choix quant à la maladie de chaque patient, la démarche que l'on adopte est la suivante :\\
+
+Soit le patient $i$, on décide que ce patient est atteint de la maladie $j$ si : \\
+\begin{center}
+	$j = argmax_j (\prob(X_i=j)=p_j=\prob(T_{i,j}=1))$
+\end{center}
+
+
+En pratique, on ne connaît aucun des $(p_j)_j$, mais on peut les estimer par maximum de vraisemblance du modèle défini dans la partie précédente.\\
+Un problème tout fois est toujours présent, la vraisemblance du modèle nécessite de connaître les valeurs des $T_{i,l}$ qui ne sont à priori pas connu, puisqu'au quel cas on connaîtrait la maladie du patient.\\
+Dans un premier temps considérons connu les valeurs de $T{i,l}$ et déterminons les estimateurs du maximum de vraisemblance, on se concentrera dans un second temps à comment déterminer les $T_{i,l}$.
+\bigskip
+
+En effectuant la maximisation du Lagrangien de la fonction : 
+
+\begin{center}
+	$\left( \left(\pi^k_{l,j}\right)_{l,j,k},(p_j)_j \right) |  \!\!\! \longrightarrow \displaystyle \prod_i^I \displaystyle \prod_{l=1}^J \left( p_l \displaystyle \prod_{k=1}^K \displaystyle \prod_{j = 1}^J \left(\pi^k_{l,j}\right)^{n^k_{i,j}} \right)^{T_{i,l}}$
+\end{center}
+
+Sous la contrainte $\forall l,k \in  \llbracket 1,J \rrbracket \times  \llbracket 1,K \rrbracket, \left(\displaystyle \sum_{j = 1}^J \pi^k_{l,j} = 1 \right)$\\
+
+On obtient les estimateurs du maximum de vraisemblance suivant : \\
+
+\begin{center} 
+	$\widehat{\pi^{k}_{l,j}} = \displaystyle \frac{\displaystyle \sum_i T_{i,l} n^k_{i,j}}{\displaystyle \sum_l \displaystyle \sum_i T_{i,l} n^k_{i,j}}$
+\end{center}
+\begin{center}
+	$\widehat{p_l} = \displaystyle \frac{\displaystyle \sum_i T_{i,l}}{I}$
+\end{center}
+
+\begin{rem}
+	La preuve alourdissant la lecture, on se contente de donner l'idée générale permettant de retrouver les estimateurs. \\
+Il convient de faire ressortir de la fonction ci-dessus, pour l'estimation des $\pi^k_{l,j}$ (respectivement des $p_j$), le terme en $\pi^k_{l,j}$ (repectivement en $p_l$). On obtient alors les termes suivant $\displaystyle \prod_i^I \left(\pi^k_{l,j}\right)^{n^k_{i,j}T_{i,l}} a_i$ et $\displaystyle \prod_i^I (p_l)^{T_{i,l}} b_i$ avec $a_i$ et $b_i$ correspondant au reste du produit.\\
+Les contraintes de maximisation permettent ensuite d'obtenir les dénominateurs dans l'expression des estimateurs. 
+\end{rem}
+\bigskip
+\bigskip
+\bigskip
+
+A présent que l'on dispose des estimateurs du maximum de vraisemblance, il nous faut déterminer les $T_{i,l}$, nécessaire au calcul des estimateurs. Ces derniers n'étant pas connu, on souhaite les estimer. \\
+Un estimateur naturel pouvant être prit pour chaque $T_{i,l}$ est l'espérance conditionnelle sachant $(Y^k_i)_k$, $\E[T_{i,l}|(Y^k_i)_k]$. \\
+Il s'agit de la meilleure approximation de $T_{i,l}$ au sens de la norme $\mathcal{L}^2$, à partir de ce que l'on connait $<(Y^k_i)_k>$ (les réponses des médecins).\\
+
+$\E[T_{i,l}|(Y^k_i)_k]$ peut se réécrire sous la forme suivante : 
+
+\begin{center}
+	\begin{align*}
+		\E[T_{i,l}|(Y^k_i)_k] &= \E[0 \times \1_{\{T_{i,l} = 0\}} + 1 \times \1_{\{T_{i,l} = 1\}}|(Y^k_i)_k] \\
+		&= \E[\1_{\{T_{i,l} = 1\}}|(Y^k_i)_k]\\
+		&= \prob\left( T_{i,l} = 1 |(Y^k_i)_k \right)\\
+	\end{align*}
+\end{center}
+
+En explicitant cette probabilité on a : 
+
+\begin{center}
+	\begin{align*}
+		\prob\left( T_{i,l} = 1 |(Y^k_i)_k \right) &= \displaystyle \frac{\prob \left( \left( T_{i,l} = 1 \right) \cap \left(Y^k_i\right)_k\right)}{\prob \left( \left( Y^k_i \right)_k \right)}\\
+		&= \displaystyle \frac{\prob \left( \left(Y^k_i \right)_k | \left( T_{i,l} =1 \right) \right) \times \prob (T_{i,l} = 1)}{\displaystyle \sum_l^J \prob \left( \left(Y^k_i \right)_k | \left( X_i = l \right) \right) \times \prob (X_i = l)}\\
+		&= \displaystyle \frac{\prob \left( \left(Y^k_i \right)_k | \left( X_i = l \right) \right) \times \prob (X_i = l)}{\displaystyle \sum_l^J \prob \left( \left(Y^k_i \right)_k | \left( X_i = l \right) \right) \times \prob (X_i = l)}\\
+		&= \displaystyle \frac{p_l \displaystyle \prod_k^K \displaystyle \prod_j^J (\pi^k_{l,j})^{n^k_{i,j}}}{\displaystyle \sum_l^J p_l \displaystyle \prod_k^K \displaystyle \prod_j^J (\pi^k_{l,j})^{n^k_{i,j}}}, \textit{car } \forall i,l ~\{X_i = l\} = \{T_{i,l} = 1\}\\
+	\end{align*}
+\end{center}
 
 
 
