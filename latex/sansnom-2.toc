@@ -1,5 +1,0 @@
-\babel@toc {french}{}\relax 
-\contentsline {part}{Introduction}{2}{chapter*.2}%
-\contentsline {chapter}{\numberline {1}Modélisation du problème}{3}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Modèle Dawid-Skene}{3}{section.1.1}%
-\contentsline {section}{\numberline {1.2}Résolution du problème}{5}{section.1.2}%
