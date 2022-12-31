@@ -329,11 +329,13 @@ La vraisemblance est également équivalente à cette même expréssion.
 
 Pour faire un choix quant à la maladie de chaque patient, la démarche que l'on adopte est la suivante :\\
 
-Soit le patient $i$, on décide que ce patient est atteint de la maladie $j$ si : \\
+Soit l'image $i$, on décide que le label de cette image est $j$ si : \\
 \begin{center}
-	$j = argmax_j (\prob(X_i=j)=p_j=\prob(T_{i,j}=1))$
+	$j = argmax_j (T_{i,j})$
 \end{center}
 
+
+DES MODIFS ENCORE A FAIRE ...\\
 
 Les paramètres $(p_j)_j$ n'étant pas connu on souhaite les estimer, et on les estime par maximum de vraisemblance, à partir du modèle défini dans la partie précédente.\\
 Un problème tout fois est présent, ceci étant dû au modèle que l'on a défini car, la détermination des estimateurs du maximum de vraisemblance nécessitent de bénéficier des observations des labels des images, qui ne sont pas connu, en particulier il nous faut avoir accès aux valeurs des $T_{i,l}$ dans l'exprèssion de la vraisemblance.\\
@@ -398,6 +400,53 @@ On peut alors donner une estimation des $\E[T_{i,l}|(Y^k_i)_k]$, et de nouveau o
 
 Il n'existe pas de preuvre de convergence de la suite de paramètres établie par l'algorithme EM et le chois de bons paramètres initiaux est de fait primordial.\\
 Comme sus-mentionné en début de partie, nous disposons d'une garantie théorique de l'algoritme EM justifiant la démarche que nous avons introduit;  celle-ci étant que les estimateurs ainsi obtenus ont la particularités de faire croitre, à chaque itération, la vraisemblance des observations. \\
-Toute fois, ce résultat ne prétend pas que l'algorithme EM maximisera la vraisemblance des observations. Ce dernier peut tout à fait produire une suite de paramètres correspondant à un maximum local ; et une augmentation du nombre d'itérations n'apportera pas de solution à ce problème.
+Toute fois, ce résultat ne prétend pas que l'algorithme EM maximisera la vraisemblance des observations. Ce dernier peut tout à fait produire une suite de paramètres correspondant à un maximum local ; et une augmentation du nombre d'itérations n'apportera pas de solution à ce problème.\\
+
+\section{Initialisation des $T_{i,l}$}
+
+On peut proposer une initialisation simple des  $T_{i,l}$ sans la base d'une quelconque information des données, en les estimant par : 
+
+\begin{center}
+	$T_{i,l} = \displaystyle \frac{1}{J}$
+\end{center}
+
+Mais cette initialisation n'est pas optimale pour espérer estimer converger vers les estimateurs du maximum de vraisemblance.\\
+
+Si les participants annote suffisament bien les images, on peut donner une meilleur initialisation des $T_{i,l}$ en se basant sur les résultats obtenus des participants, dans ce cas on estime $T_{i,l}$ par : 
+
+\begin{center}
+	 $T_{i,l} = \displaystyle \frac{ \displaystyle \sum_k^K n_{i,l}^k}{\displaystyle \sum_k \displaystyle \sum_j n_{i,j}^k}$
+\end{center}
+
+Il s'agit d'estimer $T_{i,l}$ par le nombre de fois que les participants on annotait $l$ à l'image $i$ sur l'ensemble des annotations qu'ils ont donné pour l'image $i$, ici les $n_{i,l}^k$ valent soit $1$ soit $0$. On estime $T_{i,l}$ par vote majoritaire.
+
+\chapter{Pseudo-Code algoritme EM}
+
+Dans cette partie nous allons présenter l'algorithme EM, il s'agit d'une méthode itérative, constituée de deux étapes, à savoir une étape "Expectation" et une étape "Maximization". Cette algorithme nous permet de répondre à notre problèmatique initiale, par la garantie théorique de la croissance de la vraisemblance du modèle défini dans la partie Dawid-Skene.
+
+\section{L'étape E (Expectation)}
+
+La phase E consiste à calculer l'estimation des $T_{i,l}$ par $\E[T_{i,l}|(Y^k_i)_k]$.\\
+Puisque seule son expression est nécessaire pour obtenir l'estimation des estimateurs du maximum de vraisemblance des $(\pi^k_{l,j})_{k,l,j}$ et $p_l$. Son calcul est rendu possible par la forme analytique que l'on a pû déterminer précédement à la page $6$, il convient dans un premier temps d'estimer les $(\pi^k_{l,j})_{k,l,j}$ et $p_l$ en ayant utilisé l'initialisation des $T_{i,l}$.
+
+\section{L'étape M (Maximization)}
+
+La phase M consiste à maximiser la vraisemblance du modèle, ce maximum est atteint en les paramètres $\left(\widehat{\pi^k_{l,j}}, \widehat{p_l} \right)$ et ces trois paramètres seront calculés à l'aide des maximas établis à la page $6$. Ce sont ces estimateurs qui seront utilisés dans l'itération suivante pour mêttre à jour estimation à l'étape E.
+
+\section{Pseudo-code}
+
+\begin{algorithm}
+	\caption{\textbf{L’algorithme EM (Dempster et al., 1977).}}
+	\begin{algorithmic}[1]
+		\REQUIRE{initialisation des $(T_{i,l})_{i,l} = (T_{i,l})_0$, les observations $\left(Y^k_{i}\right)_{k,i}$, $(n_{i,l}^k)_{k,i,l}$ et $N \in \mathbb{N}$ le nombre d'intération;}
+		\FOR {$n $ allant de $1$ à $N$}
+		\STATE {$\text{\textbf{ETAPE M :} \textit{Calculer les }} \left(\widehat{\pi^k_{l,j}}\right)_n = \displaystyle \frac{\displaystyle \sum_i \left(T_{i,l}\right)_{n-1} n^k_{i,j}}{\displaystyle \sum_l \displaystyle \sum_i \left(T_{i,l}\right)_{n-1} n^k_{i,j}} $, $\left(\widehat{p_l}\right)_n = \displaystyle \frac{\displaystyle \sum_i \left(T_{i,l}\right)_{n-1}}{I}$}
+		\STATE {$\text{\textbf{ETAPE E :}\textit{ Calculer }} \left(\widehat{T_{i,l}}\right)_n = \displaystyle \frac{ \left(\widehat{p_l}\right)_n \displaystyle \prod_k^K \displaystyle \prod_j^J \left(\widehat{\pi^k_{l,j}}\right)_n^{n^k_{i,j}}}{\displaystyle \sum_l^J \left(\widehat{p_l}\right)_n \displaystyle \prod_k^K \displaystyle \prod_j^J \left(\widehat{\pi^k_{l,j}}\right)_n^{n^k_{i,j}}}$;}
+		\ENDFOR
+		\RETURN {$max_{_l} \left(\widehat{T_{i,l}}\right)_N $;}
+	\end{algorithmic}
+\end{algorithm}
+
+
 
 \end{document}
