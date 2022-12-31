@@ -231,51 +231,56 @@ C'est à ce problème, que ce projet propose de présenter différentes solution
 
 Dans ce chapitre, nous établissons le cadre nous permettant de traiter le problème de décision lorsque plusieurs obervations d'une même donnée sont fournit. 
 
-Nous définissons alors l'exemple suivant : 
+Nous définissons alors l'exemple d'un esemble d'images à labeliser, les experts du domaines décident alors de faire appel à plusieurs participants pour labéliser ces images.\\
+On définit le cadre suivant : 
 
 \begin{itemize}[label=\adfflowerleft]
-	\item On dispose d'un esemble de patient $\left\{1,\cdots,I\right\}$ tous atteint d'une maladie, et on suppose le vecteur aléatoire $(X_i)_{i \in \{1,\cdots,I \}}$, tel que $\forall i$, $X_i$ à valeur dans $\left\{1,\cdots,J\right\}$ représente la maladie du partient $i$.
-	\item On dispose egalement d'un esemble de médecin $\{1, \cdots, K\}$, et on considère $\forall i \in \{1, \cdots, I\}$ le vecteur aléatoire $(Y^k_i)_{k \in \{1, \cdots, K\}}$ le diagnostique du médecin $k$ au patient $i$, $Y^k_i$ à valeur dans $\{0,1\}^J$. 
-	\item Chaque médecin répond indépendament des autres et la maladie de chaque patient est indépendante des autres. On note l'independance 2 à 2, $(Y^k_i)_k \indep$ et $(X_i)_i \indep$
+	\item On dispose d'un esemble d'images $\left\{1,\cdots,I\right\}$ et on suppose le vecteur aléatoire $(X_i)_{i \in \{1,\cdots,I \}}$, tel que $\forall i$, $X_i$ à valeur dans $\left\{1,\cdots,J\right\}$ correspond à l'objet illustré sur l'image $i$.
+	\item On dispose egalement d'un esemble de participant $\{1, \cdots, K\}$, et on considère $\forall i \in \{1, \cdots, I\}$ le vecteur aléatoire $(Y^k_i)_{k \in \{1, \cdots, K\}}$ la labélisation du participant $k$ à l'image $i$, $Y^k_i$ à valeur dans $\{0,1\}^J$. 
+	\item Chaque participant répond indépendament des autres et chaque image est indépendante des autres, elle ne donne aucune indication sur les autres images . On note l'independance 2 à 2, $(Y^k_i)_k \indep$ et $(X_i)_i \indep$
 \end{itemize}
 
-Afin de diagnostiquer le meilleur traitement à chaque patient, on doit leur diagnostiquer une maladie. Toute fois nous pouvons nous retrouver dans la situation où le diagnostique différent d'un médecin à un autre, pour diverses raisons; erreur de mesure, erreur d'annotation, fatigue. Il convient dans ce cas de trouver une solution à la question : quelle maladie est atteint chaque patient ? \\
+A partir des résultats donner par chaque participant nous pouvons essayer d'attribuer un label à chaque image. Toute fois nous pouvons nous retrouver dans la situation où le label donner par un participant à une image est diffère de celui d'un autre participant, pour diverses raisons; erreur d'annotation, fatigue, spam. Il convient dans ce cas de trouver une solution à la question : quel label donner à chaque image ? \\
 
-Dans le but de simplifier l'approche, nous considérons dans un premier temps le cas d'un medecin et d'un patient, nous pouvons également émettre l'hypothèse vraisemblable suivante : \\
+Afin de simplifier les démarches, nous allons envisager le cadre suivant; nous allons considérer, en plus de l'observation des résultats des participants, observer les labels des images. \\
+Ce cadre s'écarte légèrement de celui du problème puisque l'information sur les labels des images n'est pas accèssible, cependant nous verrons comment palier à cela dans la partie suivante; notamment par une garantie théorique d'un algorithme que l'on appelle algorithme EM. \\
+Dans un premier temps nous considérons le cas d'un participant et une image.\\
+
+Nous émettons l'hypothèse suivante : 
 
 \begin{hyp}
 	Nous supposons que, $\forall j,k \in \llbracket 1,J \rrbracket \times \llbracket 1,K \rrbracket$, $Y^k_i | X_i = \alpha_i \sim Multinomiale((\pi^k_{\alpha_i,j})_{j \in \llbracket 1,J \rrbracket},1)$
 \end{hyp}
 
-Sachant que le partient $i$ est atteint de la maladie $\alpha_i$, la réponse du médecin $k$ suit une loi multinomiale. Le médecin peut, ou non, commettre une érreur de mesure même en connaissant la vraie maladie du patient. \\
+Sachant que l'image $i$ a pour label $\alpha_i$, la réponse du participant $k$ suit une loi multinomiale. Dans le cas où le label de l'image $i$ est connu, le participant $k$ peut aussi y avoir accès, et nous avons $Y^k_i, X_i $ non indépendant. \\
 
-Les paramètres $(\pi^k_{\alpha_i,j})_{j \in \llbracket 1,J \rrbracket}$ correspondent à la probabilité que le médecin $k$ diagnostique la maladie $j$ au patient $i$ sachant qu'il est atteint de la vraie maladie $\alpha_i$. On suppose que chaque médecin ne voit qu'une seule fois chaque patient.\\
+Les paramètres $(\pi^k_{\alpha_i,j})_{j \in \llbracket 1,J \rrbracket}$ correspondent à la probabilité que le participant $k$  annote le label $j$ à l'image $i$ sachant que le label correct est le label $\alpha_i$. On suppose que chaque participant ne labelise qu'une seule fois chaque image.\\
 
 On ainsi
 \begin{center}
 $\prob_{Y^k_i|X_i = \alpha_i} = \displaystyle \sum_{(n^k_{i,1}, \cdots, n^k_{i,J})} \underbrace{\frac{\big(\displaystyle \sum_{j=1}^J n^k_{i,j}\big)!}{\displaystyle \prod_{j=1}^J (n^k_{i,j})!}\displaystyle \prod_{j=1}^J \big(\pi^k_{\alpha_i,j}\big)^{n^k_{i,j}}}_{\textit{densité suivant} \displaystyle \sum \delta_{(n^k_{i,1}, \cdots, n^k_{i,J})}} \delta_{(n^k_{i,1}, \cdots, n^k_{i,J})}$
 \end{center}
 
-Avec $n^k_{i,j}$ le nombre de fois que le médecin $k$ à diagnostiqué la maladie $j$ au patient $i$\\
+Avec $n^k_{i,j}$ le nombre de fois que le participant $k$ à annoter le label $j$ à l'image $i$\\
 
 On a alors que la vraisemblance de $Y^k_i | X_i = \alpha_i$ est équivalent à $\displaystyle \prod_{j=1}^J \big(\pi^k_{\alpha_i,j}\big)^{n^k_{i,j}}$\\
 
 
 \begin{rem}
-	Ici on a une dépendance des paramètres $(\pi^k_{\alpha_i,j})$ en $k$,$j$ et $\alpha_i$ (pour le conditionnement), mais l'indice $i$ sert simplement à indiquer qu'on considère le patient $i$ et ne consitue pas un paramètre.\\
-	Cela signifie que, sachant que le patient $i$ est malade de la maladie $\alpha_i$ et que le patient $i'$ est malade de la maladie $\alpha_{i'}$ mais $\alpha_i = \alpha_{i'}$, la probabilité que le médecin $k$ diagnostique $j$ au patient $i$ est la même de celle où il diagnostque $j$ pour le patient $i'$. 
-	En tout état de connaissance, le médecin sachant que les deux patients sont atteint de la même maladie, la probabilité qu'il diagnostique la maladie $j$ à l'un, et $j$ à l'autre n'a pas lieu d'être différente. Il s'agit pour le médecin d'une même situation et le choix ne dépend que de lui. 
+	Ici on a une dépendance des paramètres $(\pi^k_{\alpha_i,j})$ en $k$,$j$ et $\alpha_i$ (pour le conditionnement), mais l'indice $i$ sert simplement à indiquer qu'on considère l'image $i$ et ne consitue pas un paramètre.\\
+	Cela signifie que, sachant que le label de l'image $i$ est $\alpha_i$ et que le label de l'image $i'$ est $\alpha_{i'}$ mais $\alpha_i = \alpha_{i'}$, la probabilité que le participant $k$ annote le label $j$ à l'image $i$ est la même de celle où il annote le label $j$ pour l'image $i'$. 
+	En tout état de connaissance, le particpant sachant que les deux images ont le même label, la probabilité qu'il annote le label $j$ à l'une, et $j$ à l'autre n'a pas lieu d'être différente. Il s'agit pour le particpant d'une même situation et le choix ne dépend que de lui. 
 \end{rem}
 \bigskip
 
 
-Dans le but de se ramener au cas de plusieurs patients et plusieurs médecins, on considère ici un patient $i$ et tous les médecins $(1, \cdots, K)$.\\
+Dans le but de se ramener au cas de plusieurs images et plusieurs participants, on considère ici une image $i$ et tous les participants $(1, \cdots, K)$.\\
 
 \begin{rem}
 	Par soucis de lisibilité on notera $\prob(Y^k_i = (n^k_{i,1}, \cdots, n^k_{i,J})|X_i = \alpha_i)$ par $\prob(Y^k_i|X_i = \alpha_i).$
 \end{rem}
 
-Pour tous les médecins on a dans ce cas : 
+Pour tous les participants on a dans ce cas : 
 \begin{center}
 	\begin{align*}
 		\prob \left( \displaystyle \bigcap_{k=1}^K Y^k_i |X_i =\alpha_i \right) &= \displaystyle \prod_{k=1}^K \prob \left(Y^k_i |X_i = \alpha_i \right) \textit{, car} (Y^k_i)_k \indep\\
@@ -285,9 +290,8 @@ Pour tous les médecins on a dans ce cas :
 
 La vraisemblance du vecteur $(Y^k_i | X_i = \alpha_i)_k$ est équivalente à cette même valeur.\\
 
-En finalité, les résultats obervés sont ceux du vecteur $(Y^k_i)_k$ pour un patient i fixé. Toute fois, si nous avions également accès à la vraie maladie du patient, on observe dans ce cas les résultats du vecteur $((Y^k_i)_k, X_i)$.\\
-
-Intéréssons nous alors, à la probabilité $\prob \left( \left( \displaystyle \bigcap_k Y^k_i \right) \bigcap \left(X_i = \alpha_i \right) \right)$.\\
+Ramenons nous à présent au cadre de notre problème et intéressons nous au vecteur $((Y^k_i)_k, X_i)$.\\
+Nous pouvons de ce qui précède déterminer la probabilité $\prob \left( \left( \displaystyle \bigcap_k Y^k_i \right) \bigcap \left(X_i = \alpha_i \right) \right)$.\\
 
 On note $\forall i,j \in \{1, \cdots, J\}^2, p_j = \prob(X_i = j)$.\\
 
@@ -298,17 +302,15 @@ On note $\forall i,j \in \{1, \cdots, J\}^2, p_j = \prob(X_i = j)$.\\
 	\end{align*}
 \end{center}
 
-Plus généralement, en définissant $T_{i,l}$ la variable aléatoire telle que $T_{i,l} = 1$, si la maladie du patient $i$ est $l$ et $T_{i,l} = 0$ sinon, on a : \\
+Plus généralement, en définissant $T_{i,l}$ la variable aléatoire telle que $T_{i,l} = 1$, si le label de l'image  $i$ est $l$ et $T_{i,l} = 0$ sinon, on a : \\
 
 \begin{center}
 	$p_{\alpha_i} \displaystyle \prod_{k=1}^K \displaystyle \prod_{j = 1}^J \left(\pi^k_{\alpha_i,j}\right)^{n^k_{i,j}} = \displaystyle \prod_{l=1}^J \left( p_l \displaystyle \prod_{k=1}^K \displaystyle \prod_{j = 1}^J \left(\pi^k_{l,j}\right)^{n^k_{i,j}} \right)^{T_{i,l}}$
 \end{center}
 
-De plus l'événement $\{X_i = \alpha_i \} = \{T_{i,\alpha_i} = 1\}$, $\forall l \in \{1, \cdots, J\}$ $T_{i,l}$ est alors connu.
+De plus l'événement $\{X_i = \alpha_i \} = \{T_{i,\alpha_i} = 1\}$, $\forall l \in \{1, \cdots, J\}$ $T_{i,l}$ est alors connu.\\
 
-\newpage
-
-Il manque maintenant à se placer dans le cas où on observe les résutats des médecins pour touts les patients, et les maladies des patients.\\
+Il manque maintenant à se placer dans le cas où on observe les résutats des participants pour toutes les images et les labels de chaque image.\\
 
 $\forall k, (Y^k_i) \indep X_{i'}, i' \neq i$ et $(Y^k_i)_i \indep $, on a alors $Y^k_i \indep (Y^k_{i'},X_{i'})$ puis $(Y^k_i,X_i) \indep (Y^k_{i'},X_{i'})$\\
 On a ainsi la probabilité : 
@@ -333,12 +335,13 @@ Soit le patient $i$, on décide que ce patient est atteint de la maladie $j$ si 
 \end{center}
 
 
-En pratique, on ne connaît aucun des $(p_j)_j$, mais on peut les estimer par maximum de vraisemblance du modèle défini dans la partie précédente.\\
-Un problème tout fois est toujours présent, la vraisemblance du modèle nécessite de connaître les valeurs des $T_{i,l}$ qui ne sont à priori pas connu, puisqu'au quel cas on connaîtrait la maladie du patient.\\
-Dans un premier temps considérons connu les valeurs de $T{i,l}$ et déterminons les estimateurs du maximum de vraisemblance, on se concentrera dans un second temps à comment déterminer les $T_{i,l}$.
+Les paramètres $(p_j)_j$ n'étant pas connu on souhaite les estimer, et on les estime par maximum de vraisemblance, à partir du modèle défini dans la partie précédente.\\
+Un problème tout fois est présent, ceci étant dû au modèle que l'on a défini car, la détermination des estimateurs du maximum de vraisemblance nécessitent de bénéficier des observations des labels des images, qui ne sont pas connu, en particulier il nous faut avoir accès aux valeurs des $T_{i,l}$ dans l'exprèssion de la vraisemblance.\\
+
+Dans un premier temps nous pouvons considérer connu les valeurs de $T{i,l}$ afin de déterminer les expréssions des estimateurs du maximum de vraisemblance, on se concentrera dans un second temps à comment déterminer les $T_{i,l}$.
 \bigskip
 
-En effectuant la maximisation du Lagrangien de la fonction : 
+En effectuant la maximisation du Lagrangien de la fonction de vraisemblance: 
 
 \begin{center}
 	$\left( \left(\pi^k_{l,j}\right)_{l,j,k},(p_j)_j \right) |  \!\!\! \longrightarrow \displaystyle \prod_i^I \displaystyle \prod_{l=1}^J \left( p_l \displaystyle \prod_{k=1}^K \displaystyle \prod_{j = 1}^J \left(\pi^k_{l,j}\right)^{n^k_{i,j}} \right)^{T_{i,l}}$
@@ -357,7 +360,7 @@ On obtient les estimateurs du maximum de vraisemblance suivant : \\
 
 \begin{rem}
 	La preuve alourdissant la lecture, on se contente de donner l'idée générale permettant de retrouver les estimateurs. \\
-Il convient de faire ressortir de la fonction ci-dessus, pour l'estimation des $\pi^k_{l,j}$ (respectivement des $p_j$), le terme en $\pi^k_{l,j}$ (repectivement en $p_l$). On obtient alors les termes suivant $\displaystyle \prod_i^I \left(\pi^k_{l,j}\right)^{n^k_{i,j}T_{i,l}} a_i$ et $\displaystyle \prod_i^I (p_l)^{T_{i,l}} b_i$ avec $a_i$ et $b_i$ correspondant au reste du produit.\\
+Il convient de faire ressortir de la fonction ci-dessus, pour l'estimation des $\pi^k_{l,j}$ (respectivement des $p_l$), le terme en $\pi^k_{l,j}$ (repectivement en $p_l$). On obtient alors les termes suivant $\displaystyle \prod_i^I \left(\pi^k_{l,j}\right)^{n^k_{i,j}T_{i,l}} a_i$ et $\displaystyle \prod_i^I (p_l)^{T_{i,l}} b_i$ avec $a_i$ et $b_i$ correspondant au reste du produit.\\
 Les contraintes de maximisation permettent ensuite d'obtenir les dénominateurs dans l'expression des estimateurs. 
 \end{rem}
 \bigskip
@@ -394,7 +397,7 @@ Toute fois, on voit alors apparaître une procédure permettant d'estimer les es
 On peut alors donner une estimation des $\E[T_{i,l}|(Y^k_i)_k]$, et de nouveau obtenir une estimation des estimateurs du maximum de vraisemblance des $(\pi^k_{l,j})_{k,l,j}$ et $p_l$. Cette procédure itérative coorespond à ce que l'on appelle l'algoritme EM.\\
 
 Il n'existe pas de preuvre de convergence de la suite de paramètres établie par l'algorithme EM et le chois de bons paramètres initiaux est de fait primordial.\\
-Toute fois, une des garanties théoriques est fondamentale à l'utilisation de l'algoritme EM ; Les estimateurs ainsi obtenus ont la particularités de faire croitre, à chaque itération, la vraisemblance des observations. \\
-Comme sus-mentionné, ce résultat ne prétend pas que l'algorithme EM maximisera la vraisemblance des observations. Ce dernier peut tout à fait produire une suite de paramètres correspondant à un maximum local ; et une augmentation du nombre d'itérations n'apportera pas de solution à ce problème.
+Comme sus-mentionné en début de partie, nous disposons d'une garantie théorique de l'algoritme EM justifiant la démarche que nous avons introduit;  celle-ci étant que les estimateurs ainsi obtenus ont la particularités de faire croitre, à chaque itération, la vraisemblance des observations. \\
+Toute fois, ce résultat ne prétend pas que l'algorithme EM maximisera la vraisemblance des observations. Ce dernier peut tout à fait produire une suite de paramètres correspondant à un maximum local ; et une augmentation du nombre d'itérations n'apportera pas de solution à ce problème.
 
 \end{document}
