@@ -29,10 +29,18 @@ os.chdir(path_to_project)
 df = pd.read_csv("cifar10h-raw.csv",na_values="-99999")
 df.dropna(inplace=True)  # delete annotators/spamers
 
-# print(len(df))
-# print(len(df['cifar10_test_test_idx'].unique()))
-# 514 200
-# 10 000
+df_test = df[['annotator_id','true_label','chosen_label','cifar10_test_test_idx']]
+df_test = df_test[df_test['cifar10_test_test_idx']<100]
+
+print(len(df_test))
+print(len(df_test['cifar10_test_test_idx'].unique()))
+print(len(df_test['annotator_id'].unique()))
+# 5136
+# 100
+# 2197
+K = len(df_test['annotator_id'].unique())
+I = len(df_test['cifar10_test_test_idx'].unique())
+J = 10
 
 idx = df['cifar10_test_test_idx'].unique()  #numéro de l'image
 K = len(df['annotator_id'].unique())
@@ -65,18 +73,50 @@ p = [1]*len(labels)
 
 PI_test = []
 N_test = []
-for i in range(9):
-    PI_test += [ np.ones((5,5)) ]
-    N_test += [ np.ones((10,5)) ]
+for k in range(1000):
+    PI_test += [ np.random.random((5,5)) ]
+    N_test += [ np.random.random((10000,5)) ]
 
-T_test = np.ones((10,5))
+T_test = np.random.random((10000,5))
 p_test = [1]*5
 
-b = 0
-for j in range(5):
-    b += sum(T_test[:,0]*N_test[0][:,j])
 
-a = sum(T_test[:,0]*N_test[0][:,0])
+
+K = 1000 #len(df_test['annotator_id'].unique())
+I = 10000 #len(df_test['cifar10_test_test_idx'].unique())
+J = 10
+
+PI_test2 = []
+N_test2 = []
+for k in range(K):
+    PI_test2 += [ np.random.random((J,J)) ]
+    N_test2 += [ np.random.random((I,J)) ]
+
+T_test2 = np.random.random((I,J))
+p_test2 = [1]*J
+
+df_test = df[['annotator_id','true_label','chosen_label','cifar10_test_test_idx']]
+df_test = df_test[df_test['annotator_id']<60]
+print(len(df_test['annotator_id'].unique()))
+df_test = df_test[df_test['cifar10_test_test_idx']<100]
+print(len(df_test['cifar10_test_test_idx'].unique()))
+print(len(df_test['annotator_id'].unique()))
+
+
+T_test = np.random.random((I,J))
+N_test = []
+for k in range(K):
+    print(k)
+    a = df_test[df_test['annotator_id'] == k]
+    N_test += [ create_matrix_N(a) ]
+    
+def create_matrix_N(A):
+    N = np.zeros((I,J))
+    for i in list(A['cifar10_test_test_idx']):
+        i = int(i)
+        j = int(A[A['cifar10_test_test_idx'] == i]['chosen_label'])
+        N[i,j] = 1
+    return(N)
 
 
 
@@ -125,14 +165,12 @@ def EM_stepE(f):
     K = len(N)
     
     for i in range(I):
-        
         prod_2 = []
         for l in range(J):
-            
-            prod_1 = 1
+            prod_1 = p[l]
             for k in range(K):
                 for j in range(J):
-                    prod_1 = prod_1 * p[l] * PI[k][l,j]**(N[k][i,j])
+                    prod_1 = prod_1 * ( PI[k][l,j] ) **(N[k][i,j])
             
             prod_2.append(prod_1)
         
@@ -141,14 +179,15 @@ def EM_stepE(f):
     return(T)
         
 EM_stepE(EM_stepM(T_test,N_test))
+EM_stepE(EM_stepM(T_test2,N_test2))
+1 * 1 * 0.1**1.0
 
-    
 def EM_algo(T,N,n):
     
     for i in range(n):
         T = EM_stepE(EM_stepM(T,N))
     return(T)
 
-EM_algo(T_test,N_test,10)
+EM_algo(T_test,N_test,1)
 
 # %%
