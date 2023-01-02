@@ -62,22 +62,6 @@ p = [1]*len(labels)
 # p[j] : in theory probability that a random image has the label j
 
 #%%
-W = []
-for i in range(len(idx)):
-
-    W += [
-        df.loc[abs(df['cifar10_test_test_idx'] - i)<10-3,
-        ["annotator_id","chosen_label"]].astype("int") 
-        ]
-
-    if i % 100 == 0:
-        print("i = ",i)
-
-#%%
-print(W[0])
-print(8 in W[0]["chosen_label"].unique())
-
-#%%
 
 PI_test = []
 N_test = []
@@ -103,7 +87,7 @@ def produit_liste(A):
     return(a)
 
 
-def EM_stepE(T,N):
+def EM_stepM(T,N):
     I = len(T[:,0])
     J = len(T[0,:])
     K = len(N)
@@ -127,10 +111,10 @@ def EM_stepE(T,N):
             p[l] = sum(T[:,l])/I
     return([PI,p,N,T])
 
-EM_stepE(T_test, N_test)
+EM_stepM(T_test, N_test)
 
 
-def EM_stepM(f):
+def EM_stepE(f):
     PI = f[0]
     p = f[1]
     N = f[2]
@@ -156,75 +140,15 @@ def EM_stepM(f):
             T[i,l] = prod_2[l]/sum(prod_2)
     return(T)
         
-EM_stepM(EM_stepE(T_test,N_test))
+EM_stepE(EM_stepM(T_test,N_test))
 
     
 def EM_algo(T,N,n):
     
-    for i in range(n-1):
-        T = EM_stepM(EM_stepE(T,N))
-    p = EM_stepE(T,N)[1]
-    return(p)
+    for i in range(n):
+        T = EM_stepE(EM_stepM(T,N))
+    return(T)
 
 EM_algo(T_test,N_test,10)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Initialisation of T :
-
-for i in range(len(T)):
-    for j in range(len(T[0])):
-        T[i][j] = 0.5
-
-nb_iter = 10
-J = len(p) ; I = len(X)
-
-for n in range(nb_iter):
-
-    for k in range(K):
-
-        # calculation of pi :
-        for j in range(J):
-
-            print("iter "+str(n)+" j "+str(j))
-
-            TN = 0
-            for l in range(J):
-                sum = 0
-                for i in range(I):
-
-                    # N_(i,l) = number of times that the observer has given the label l to the i_th image
-                    # 0 or 1 in or case
-                    if (l in W[i]["chosen_label"].unique()):
-                        
-                        sum += T[i][j] # (T[i][j])*N_(i,l) avec N_(i,l) = 1
-
-                PI_k[k][j][l] = sum
-                TN += sum
-
-            for l in range(J):
-
-                PI_k[k][j][l] = PI_k[k][j][l]/TN
-
-        # calculation of p :
-
-        for j in range(J):
-            sum = 0
-            for i in range(I):
-                sum += T[i][j]
-            p[j]= sum / len(T)
-
-
 
 # %%
