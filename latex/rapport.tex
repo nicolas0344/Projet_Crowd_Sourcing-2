@@ -218,7 +218,7 @@
 
 En science appliquée et notamment en statistique inférentielle, le recueil de données constitue une étape primordiale, il nous permet d'élaborer des modèles et de construire des estimateurs. Il convient à ce titre d'être attentif à l'observation des données.
 
-Dans un cadre idéal, les modèles construit nécessitent un faible nombre de données dont l'observation peut être réalisée par des professionnels du domaine concerné. Toujours est-il que ces situations sont peu courantes et l'observation, par ces experts, d'un grand nombre de données n'est pas envisageable. C'est à ce titre que le "Crowd-Sourcing" est couramment utilisé, puisqu'un grand nombre d'intervenant permet de construire la base de donnée nécessaire. Toute fois des erreurs d'obervations quant à la nature des données peut-être commisent, il est alors essentiel de s'accorder sur une décision.
+Dans un cadre idéal, les modèles construits nécessitent un faible nombre de données dont l'observation peut être réalisée par des professionnels du domaine concerné. Toujours est-il que ces situations sont peu courantes et l'observation, par ces experts, d'un grand nombre de données n'est pas envisageable. C'est à ce titre que le "Crowd-Sourcing" est couramment utilisé, puisqu'un grand nombre d'intervenants permet de construire la base de donnée nécessaire. Toutefois des erreurs d'obervations quant à la nature des données peut-être commises, il est alors essentiel de s'accorder sur une décision.
 
 C'est à ce problème, que ce projet propose de présenter différentes solutions. Nous étudierons le modèle construit par DAWID et SKENE.
 
@@ -229,21 +229,21 @@ C'est à ce problème, que ce projet propose de présenter différentes solution
 
 \section{Modèle Dawid-Skene}
 
-Dans ce chapitre, nous établissons le cadre nous permettant de traiter le problème de décision lorsque plusieurs obervations d'une même donnée sont fournit. 
+Dans ce chapitre, nous établissons le cadre nous permettant de traiter le problème de décision lorsque plusieurs obervations d'une même donnée sont fournies. 
 
-Nous définissons alors l'exemple d'un esemble d'images à labeliser, les experts du domaines décident alors de faire appel à plusieurs participants pour labéliser ces images.\\
+Nous définissons alors l'exemple d'un ensemble d'images à labeliser, les experts du domaines décident alors de faire appel à plusieurs participants pour labéliser ces images.\\
 On définit le cadre suivant : 
 
 \begin{itemize}[label=\adfflowerleft]
 	\item On dispose d'un esemble d'images $\left\{1,\cdots,I\right\}$ et on suppose le vecteur aléatoire $(X_i)_{i \in \{1,\cdots,I \}}$, tel que $\forall i$, $X_i$ à valeur dans $\left\{1,\cdots,J\right\}$ correspond à l'objet illustré sur l'image $i$.
-	\item On dispose egalement d'un esemble de participant $\{1, \cdots, K\}$, et on considère $\forall i \in \{1, \cdots, I\}$ le vecteur aléatoire $(Y^k_i)_{k \in \{1, \cdots, K\}}$ la labélisation du participant $k$ à l'image $i$, $Y^k_i$ à valeur dans $\{0,1\}^J$. 
-	\item Chaque participant répond indépendament des autres et chaque image est indépendante des autres, elle ne donne aucune indication sur les autres images . On note l'independance 2 à 2, $(Y^k_i)_k \indep$ et $(X_i)_i \indep$
+	\item On dispose egalement d'un ensemble de participants (annotateurs) $\{1, \cdots, K\}$, et on considère $\forall i \in \{1, \cdots, I\}$ le vecteur aléatoire $(Y^k_i)_{k \in \{1, \cdots, K\}}$ la labélisation du participant $k$ à l'image $i$, $Y^k_i$ à valeur dans $\{0,1\}^J$ (par exemple \{0,...,0,1,0,..,0\} si le participant annote une seule fois l'image $k$ comme ce sera le cas dans la partie 2). 
+	\item Chaque participant répond indépendamment des autres et chaque image est indépendante des autres, elle ne donne aucune indication sur les autres images . On note l'indépendance 2 à 2, $(Y^k_i)_k \indep$ et $(X_i)_i \indep$
 \end{itemize}
 
-A partir des résultats donner par chaque participant nous pouvons essayer d'attribuer un label à chaque image. Toute fois nous pouvons nous retrouver dans la situation où le label donner par un participant à une image est diffère de celui d'un autre participant, pour diverses raisons; erreur d'annotation, fatigue, spam. Il convient dans ce cas de trouver une solution à la question : quel label donner à chaque image ? \\
+A partir des résultats donnés par chaque participant nous pouvons essayer d'attribuer un label à chaque image. Toutefois nous pouvons nous retrouver dans la situation où le label donné par un participant à une image diffère de celui d'un autre participant, pour diverses raisons; erreur d'annotation, fatigue, spam. Il convient dans ce cas de trouver une solution à la question : quel label donner à chaque image ? \\
 
-Afin de simplifier les démarches, nous allons envisager le cadre suivant; nous allons considérer, en plus de l'observation des résultats des participants, observer les labels des images. \\
-Ce cadre s'écarte légèrement de celui du problème puisque l'information sur les labels des images n'est pas accèssible, cependant nous verrons comment palier à cela dans la partie suivante; notamment par une garantie théorique d'un algorithme que l'on appelle algorithme EM. \\
+Afin de simplifier les démarches dans un premier temps, nous allons envisager le cadre suivant; nous allons considérer, en plus de l'observation des résultats des participants, observer les labels des images. \\
+Ce cadre s'écarte légèrement de celui du problème puisque l'information sur les labels des images n'est pas accessible, cependant nous verrons comment pallier cela dans la partie suivante; notamment par une garantie théorique d'un algorithme que l'on appelle algorithme EM. \\
 Dans un premier temps nous considérons le cas d'un participant et une image.\\
 
 Nous émettons l'hypothèse suivante : 
@@ -254,22 +254,24 @@ Nous émettons l'hypothèse suivante :
 
 Sachant que l'image $i$ a pour label $\alpha_i$, la réponse du participant $k$ suit une loi multinomiale. Dans le cas où le label de l'image $i$ est connu, le participant $k$ peut aussi y avoir accès, et nous avons $Y^k_i, X_i $ non indépendant. \\
 
-Les paramètres $(\pi^k_{\alpha_i,j})_{j \in \llbracket 1,J \rrbracket}$ correspondent à la probabilité que le participant $k$  annote le label $j$ à l'image $i$ sachant que le label correct est le label $\alpha_i$. On suppose que chaque participant ne labelise qu'une seule fois chaque image.\\
+Les paramètres $(\pi^k_{\alpha_i,j})_{j \in \llbracket 1,J \rrbracket}$ correspondent à la probabilité que le participant $k$  annote le label $j$ à l'image $i$ sachant que le label correct est le label $\alpha_i$.\\
 
-On ainsi
+\newpage
+On a ainsi :
+
 \begin{center}
 $\prob_{Y^k_i|X_i = \alpha_i} = \displaystyle \sum_{(n^k_{i,1}, \cdots, n^k_{i,J})} \underbrace{\frac{\big(\displaystyle \sum_{j=1}^J n^k_{i,j}\big)!}{\displaystyle \prod_{j=1}^J (n^k_{i,j})!}\displaystyle \prod_{j=1}^J \big(\pi^k_{\alpha_i,j}\big)^{n^k_{i,j}}}_{\textit{densité suivant} \displaystyle \sum \delta_{(n^k_{i,1}, \cdots, n^k_{i,J})}} \delta_{(n^k_{i,1}, \cdots, n^k_{i,J})}$
 \end{center}
 
-Avec $n^k_{i,j}$ le nombre de fois que le participant $k$ à annoter le label $j$ à l'image $i$\\
+Avec $n^k_{i,j}$ le nombre de fois que le participant $k$ a attribué le label $j$ à l'image $i$\\
 
-On a alors que la vraisemblance de $Y^k_i | X_i = \alpha_i$ est équivalent à $\displaystyle \prod_{j=1}^J \big(\pi^k_{\alpha_i,j}\big)^{n^k_{i,j}}$\\
+On a alors que la vraisemblance de $Y^k_i | X_i = \alpha_i$ est proportionnelle à $\displaystyle \prod_{j=1}^J \big(\pi^k_{\alpha_i,j}\big)^{n^k_{i,j}}$\\
 
 
 \begin{rem}
 	Ici on a une dépendance des paramètres $(\pi^k_{\alpha_i,j})$ en $k$,$j$ et $\alpha_i$ (pour le conditionnement), mais l'indice $i$ sert simplement à indiquer qu'on considère l'image $i$ et ne consitue pas un paramètre.\\
-	Cela signifie que, sachant que le label de l'image $i$ est $\alpha_i$ et que le label de l'image $i'$ est $\alpha_{i'}$ mais $\alpha_i = \alpha_{i'}$, la probabilité que le participant $k$ annote le label $j$ à l'image $i$ est la même de celle où il annote le label $j$ pour l'image $i'$. 
-	En tout état de connaissance, le particpant sachant que les deux images ont le même label, la probabilité qu'il annote le label $j$ à l'une, et $j$ à l'autre n'a pas lieu d'être différente. Il s'agit pour le particpant d'une même situation et le choix ne dépend que de lui. 
+	Cela signifie que, sachant que le label de l'image $i$ est $\alpha_i$ et que le label de l'image $i'$ est $\alpha_{i'}$ mais $\alpha_i = \alpha_{i'}$, la probabilité que le participant $k$ attribue le label $j$ à l'image $i$ est la même de celle où il attribue le label $j$ pour l'image $i'$. 
+	En tout état de connaissance, le participant sachant que les deux images ont le même label, la probabilité qu'il annote le label $j$ à l'une, et $j$ à l'autre n'a pas lieu d'être différente. Il s'agit pour le particpant d'une même situation et le choix ne dépend que de lui. 
 \end{rem}
 \bigskip
 
@@ -277,7 +279,7 @@ On a alors que la vraisemblance de $Y^k_i | X_i = \alpha_i$ est équivalent à $
 Dans le but de se ramener au cas de plusieurs images et plusieurs participants, on considère ici une image $i$ et tous les participants $(1, \cdots, K)$.\\
 
 \begin{rem}
-	Par soucis de lisibilité on notera $\prob(Y^k_i = (n^k_{i,1}, \cdots, n^k_{i,J})|X_i = \alpha_i)$ par $\prob(Y^k_i|X_i = \alpha_i).$
+	Par souci de lisibilité on notera $\prob(Y^k_i = (n^k_{i,1}, \cdots, n^k_{i,J})|X_i = \alpha_i)$ par $\prob(Y^k_i|X_i = \alpha_i).$
 \end{rem}
 
 Pour tous les participants on a dans ce cas : 
@@ -288,12 +290,12 @@ Pour tous les participants on a dans ce cas :
 	\end{align*}
 \end{center}
 
-La vraisemblance du vecteur $(Y^k_i | X_i = \alpha_i)_k$ est équivalente à cette même valeur.\\
+La vraisemblance du vecteur $(Y^k_i | X_i = \alpha_i)_k$ est proportionnelle à cette valeur.\\
 
 Ramenons nous à présent au cadre de notre problème et intéressons nous au vecteur $((Y^k_i)_k, X_i)$.\\
 Nous pouvons de ce qui précède déterminer la probabilité $\prob \left( \left( \displaystyle \bigcap_k Y^k_i \right) \bigcap \left(X_i = \alpha_i \right) \right)$.\\
 
-On note $\forall i,j \in \{1, \cdots, J\}^2, p_j = \prob(X_i = j)$.\\
+On note $\forall (i,j) \in \{1, \cdots, J\}^2, p_j = \prob(X_i = j)$.\\
 
 \begin{center}
 	\begin{align*}
@@ -301,6 +303,8 @@ On note $\forall i,j \in \{1, \cdots, J\}^2, p_j = \prob(X_i = j)$.\\
 		& \propto p_{\alpha_i} \times \displaystyle \prod_{k=1}^K \displaystyle \prod_{j = 1}^J \left(\pi^k_{\alpha_i,j}\right)^{n^k_{i,j}}\\
 	\end{align*}
 \end{center}
+
+p_{\alpha_i} désigne la probabilité qu'une image tirée au hasard ait le label $\alpha_i$.
 
 Plus généralement, en définissant $T_{i,l}$ la variable aléatoire telle que $T_{i,l} = 1$, si le label de l'image  $i$ est $l$ et $T_{i,l} = 0$ sinon, on a : \\
 
@@ -319,11 +323,12 @@ On a ainsi la probabilité :
 	\begin{align*}
 		\prob \left( \left( \displaystyle \bigcap_i \displaystyle \bigcap_k Y^k_i \right) \cap \left( \displaystyle \bigcap_i Xi = \alpha_i \right) \right) &= \prob \left( \displaystyle \bigcap_i \left[ \left( \displaystyle \bigcap_k Y^k_i \right) \cap \left(X_i = \alpha_i\right) \right] \right)\\
 	&= \displaystyle \prod_i \prob \left( \left( \displaystyle \bigcap_k Y^k_i \right) \cap \left( X_i = \alpha_i \right) \right)\\
-	&\propto \displaystyle \prod_i^I \displaystyle \prod_{l=1}^J \left( p_l \displaystyle \prod_{k=1}^K \displaystyle \prod_{j = 1}^J \left(\pi^k_{l,j}\right)^{n^k_{i,j}} \right)^{T_{i,l}}\\
+	&\propto \displaystyle \prod_{i=1}^I \displaystyle \prod_{l=1}^J \left( p_l \displaystyle \prod_{k=1}^K \displaystyle \prod_{j = 1}^J \left(\pi^k_{l,j}\right)^{n^k_{i,j}} \right)^{T_{i,l}}\\
 	\end{align*}
 \end{center}
 
-La vraisemblance est également équivalente à cette même expréssion.
+La vraisemblance est également proportionnelle à cette même expression.
+
 
 \section{Résolution du problème}
 
