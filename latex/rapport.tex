@@ -254,7 +254,7 @@ Nous émettons l'hypothèse suivante :
 
 Sachant que l'image $i$ a pour label $\alpha_i$, la réponse du participant $k$ suit une loi multinomiale. Dans le cas où le label de l'image $i$ est connu, le participant $k$ peut aussi y avoir accès, et nous avons $Y^k_i, X_i $ non indépendant. \\
 
-Les paramètres $(\pi^k_{\alpha_i,j})_{j \in \llbracket 1,J \rrbracket}$ correspondent à la probabilité que le participant $k$  annote le label $j$ à l'image $i$ sachant que le label correct est le label $\alpha_i$.\\
+Les paramètres $(\pi^k_{\alpha_i,j})_{j \in \llbracket 1,J \rrbracket}$ correspondent à la probabilité que le participant $k$  attribue le label $j$ à l'image $i$ sachant que le label correct est le label $\alpha_i$.\\
 
 \newpage
 On a ainsi :
@@ -295,7 +295,7 @@ La vraisemblance du vecteur $(Y^k_i | X_i = \alpha_i)_k$ est proportionnelle à 
 Ramenons nous à présent au cadre de notre problème et intéressons nous au vecteur $((Y^k_i)_k, X_i)$.\\
 Nous pouvons de ce qui précède déterminer la probabilité $\prob \left( \left( \displaystyle \bigcap_k Y^k_i \right) \bigcap \left(X_i = \alpha_i \right) \right)$.\\
 
-On note $\forall (i,j) \in \{1, \cdots, J\}^2, p_j = \prob(X_i = j)$.\\
+On note $\forall (i,j) \in \{1, \cdots, J\}^2, p_j = \prob(X_i = j)$.
 
 \begin{center}
 	\begin{align*}
@@ -334,14 +334,14 @@ La vraisemblance est également proportionnelle à cette même expression.
 
 Pour faire un choix quant au label de chaque image, la démarche que l'on adopte est la suivante :\\
 
-Soit l'image $i$, on décide que le label de cette image est $j$ si : \\
+Soit l'image $i$, on décide que le label de cette image est $l$ si : \\
 \begin{center}
-	$j = argmax_j (T_{i,j})$
+	$l = argmax_l (T_{i,l})$
 \end{center}
 
-Les paramètres $T_{i,j}$ n'étant pas connu on souhaite les estimer.\\
-Un estimateur naturel pouvant être prit pour chaque $T_{i,l}$ est l'espérance conditionnelle sachant $(Y^k_i)_k$, $\E[T_{i,l}|(Y^k_i)_k]$. \\
-Il s'agit de la meilleure approximation de $T_{i,l}$ au sens de la norme $\mathcal{L}^2$, à partir de ce que l'on connait $<(Y^k_i)_k>$ (les réponses des médecins).\\
+Les paramètres $T_{i,l}$ n'étant pas connu on souhaite les estimer.\\
+Un estimateur naturel pouvant être pris pour chaque $T_{i,l}$ est l'espérance conditionnelle sachant $(Y^k_i)_k$, $\E[T_{i,l}|(Y^k_i)_k]$. \\
+Il s'agit de la meilleure approximation de $T_{i,l}$ au sens de la norme $\mathcal{L}^2$, à partir de ce que l'on connait $<(Y^k_i)_k>$ (les réponses des participants).\\
 
 $\E[T_{i,l}|(Y^k_i)_k]$ peut se réécrire sous la forme suivante : 
 
@@ -366,22 +366,20 @@ En explicitant cette probabilité on a :
 
 
 \begin{rem}
-On a donc réussi à obtenir une estimation des $T_{i,l}$ dépendant des paramètres $(\pi^k_{l,j})_{k,l,j}$ et $p_l$. Cependant ces paramètres n'étant pas connu, il nous faut les estimer et on les estime par maximum de vraisemblance, à partir du modèle défini dans la partie précédente.\\
-Un problème est présent, ceci étant dû au modèle que l'on a défini car, la détermination des estimateurs du maximum de vraisemblance nécessitent de bénéficier des observations des labels des images, qui ne sont pas connu, en particulier il nous faut avoir accès aux valeurs des $T_{i,l}$ dans l'exprèssion de la vraisemblance.\\
+On a donc réussi à obtenir une estimation des $T_{i,l}$ dépendant des paramètres $(\pi^k_{l,j})_{k,l,j}$ et $p_l$. Cependant ces paramètres n'étant pas connus, il nous faut les estimer et on les estime par maximum de vraisemblance, à partir du modèle défini dans la partie précédente.\\
+Un problème est présent, ceci étant dû au modèle que l'on a défini car, la détermination des estimateurs du maximum de vraisemblance nécessite de bénéficier des observations des labels des images, qui ne sont pas connus, en particulier il nous faut avoir accès aux valeurs des $T_{i,l}$ dans l'expression de la vraisemblance.\\
 
 Ceci ne nous permet pas, dans ce cas, de donner les estimateurs du maximum de vraisemblance des $(\pi^k_{l,j})_{k,l,j}$ et $p_l$. \\
 Toutefois, on voit apparaître une procédure permettant d'estimer les estimateurs du maximum de vraisemblance et l'espérance conditionnelle des $T_{i,l}$, il s'agit dans un premier temps, d'estimer arbitrairement les $T_{i,l}$ afin d'obtenir une estimation des estimateurs du maximum de vraisemblance $(\pi^k_{l,j})_{k,l,j}$ et $p_l$.\\
-On peut alors donner une estimation des $\E[T_{i,l}|(Y^k_i)_k]$, et de nouveau obtenir une estimation des estimateurs du maximum de vraisemblance des $(\pi^k_{l,j})_{k,l,j}$ et $p_l$. Cette procédure itérative coorespond à ce que l'on appelle l'algoritme EM.\\
+On peut alors donner une estimation des $\E[T_{i,l}|(Y^k_i)_k]$, et de nouveau obtenir une estimation des estimateurs du maximum de vraisemblance des $(\pi^k_{l,j})_{k,l,j}$ et $p_l$. Cette procédure itérative correspond à ce que l'on appelle l'algoritme EM.\\
 
-Il n'existe pas de preuvre de convergence de la suite de paramètres établie par l'algorithme EM vers les estimateurs définie, et le choix de bons paramètres initiaux est de fait primordial.\\
-Comme sus-mentionné en début de partie, nous disposons d'une garantie théorique de l'algoritme EM justifiant la démarche que nous avons introduit;  celle-ci étant que les estimateurs ainsi obtenus ont la particularités de faire croitre, à chaque itération, la vraisemblance des observations. \\
+Il n'existe pas de preuve de convergence de la suite de paramètres établie par l'algorithme EM vers les estimateurs définis, et le choix de bons paramètres initiaux est de fait primordial.\\
+Comme sus-mentionné en début de partie, nous disposons d'une garantie théorique de l'algoritme EM justifiant la démarche que nous avons introduite;  celle-ci étant que les estimateurs ainsi obtenus ont la particularité de faire croitre, à chaque itération, la vraisemblance des observations. \\
 Toutefois, ce résultat ne prétend pas que l'algorithme EM maximisera la vraisemblance des observations. Ce dernier peut tout à fait produire une suite de paramètres correspondant à un maximum local ; et une augmentation du nombre d'itérations n'apportera pas de solution à ce problème.\\
 \end{rem}
-\bigskip
-\bigskip
-\bigskip
 
 
+\newpage
 
 Considérerons connu les valeurs de $T{i,l}$, et déterminons à présent les expréssions des estimateurs du maximum de vraisemblance.
 \bigskip
@@ -394,7 +392,7 @@ En effectuant la maximisation du Lagrangien de la fonction de vraisemblance:
 
 Sous la contrainte $\forall l,k \in  \llbracket 1,J \rrbracket \times  \llbracket 1,K \rrbracket, \left(\displaystyle \sum_{j = 1}^J \pi^k_{l,j} = 1 \right)$\\
 
-On obtient les estimateurs du maximum de vraisemblance suivant : \\
+On obtient les estimateurs du maximum de vraisemblance suivants : \\
 
 \begin{center} 
 	$\widehat{\pi^{k}_{l,j}} = \displaystyle \frac{\displaystyle \sum_i T_{i,l} n^k_{i,j}}{\displaystyle \sum_l \displaystyle \sum_i T_{i,l} n^k_{i,j}}$
@@ -426,13 +424,13 @@ On peut proposer une initialisation simple des  $T_{i,l}$ sans la base d'une que
 
 Mais cette initialisation n'est pas optimale pour espérer estimer converger vers les estimateurs du maximum de vraisemblance.\\
 
-Si les participants annote suffisament bien les images, on peut donner une meilleur initialisation des $T_{i,l}$ en se basant sur les résultats obtenus des participants, dans ce cas on estime $T_{i,l}$ par : 
+Si les participants annotent suffisament bien les images, on peut donner une meilleur initialisation des $T_{i,l}$ en se basant sur les résultats obtenus des participants, dans ce cas on estime $T_{i,l}$ par : 
 
 \begin{center}
-	 $T_{i,l} = \displaystyle \frac{ \displaystyle \sum_k^K n_{i,l}^k}{\displaystyle \sum_k \displaystyle \sum_j n_{i,j}^k}$
+	 $T_{i,l} = \displaystyle \frac{ \displaystyle \sum_k n_{i,l}^k}{\displaystyle \sum_k \displaystyle \sum_j n_{i,j}^k}$
 \end{center}
 
-Il s'agit d'estimer $T_{i,l}$ par le nombre de fois que les participants on annotait $l$ à l'image $i$ sur l'ensemble des annotations qu'ils ont donné pour l'image $i$, ici les $n_{i,l}^k$ valent soit $1$ soit $0$. On estime $T_{i,l}$ par vote majoritaire.
+Il s'agit d'estimer $T_{i,l}$ par le nombre de fois que les participants ont annoté $l$ l'image $i$ sur l'ensemble des annotations qu'ils ont donné pour l'image $i$, ici les $n_{i,l}^k$ valent soit $1$ soit $0$. On estime $T_{i,l}$ par une sorte de "vote majoritaire".
 
 \chapter{Pseudo-Code algoritme EM}
 
@@ -445,7 +443,7 @@ Puisque seule son expression est nécessaire pour obtenir l'estimation des estim
 
 \section{L'étape M (Maximization)}
 
-La phase M consiste à maximiser la vraisemblance du modèle, ce maximum est atteint en les paramètres $\left(\widehat{\pi^k_{l,j}}, \widehat{p_l} \right)$ et ces trois paramètres seront calculés à l'aide des maximas établis à la page $6$. Ce sont ces estimateurs qui seront utilisés dans l'itération suivante pour mêttre à jour estimation à l'étape E.
+La phase M consiste à maximiser la vraisemblance du modèle, ce maximum est atteint en les paramètres $\left(\widehat{\pi^k_{l,j}}, \widehat{p_l} \right)$ et ces trois paramètres seront calculés à l'aide des maximas établis à la page $6$. Ce sont ces estimateurs qui seront utilisés dans l'itération suivante pour mettre à jour estimation à l'étape E.
 
 \section{Pseudo-code}
 
@@ -460,6 +458,10 @@ La phase M consiste à maximiser la vraisemblance du modèle, ce maximum est att
 		\RETURN {$max_{_l} \left(\widehat{T_{i,l}}\right)_N $;}
 	\end{algorithmic}
 \end{algorithm}
+
+\newpage
+
+\section{Application}
 
 
 
