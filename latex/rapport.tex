@@ -327,20 +327,58 @@ La vraisemblance est également équivalente à cette même expréssion.
 
 \section{Résolution du problème}
 
-Pour faire un choix quant à la maladie de chaque patient, la démarche que l'on adopte est la suivante :\\
+Pour faire un choix quant au label de chaque image, la démarche que l'on adopte est la suivante :\\
 
 Soit l'image $i$, on décide que le label de cette image est $j$ si : \\
 \begin{center}
 	$j = argmax_j (T_{i,j})$
 \end{center}
 
+Les paramètres $T_{i,j}$ n'étant pas connu on souhaite les estimer.\\
+Un estimateur naturel pouvant être prit pour chaque $T_{i,l}$ est l'espérance conditionnelle sachant $(Y^k_i)_k$, $\E[T_{i,l}|(Y^k_i)_k]$. \\
+Il s'agit de la meilleure approximation de $T_{i,l}$ au sens de la norme $\mathcal{L}^2$, à partir de ce que l'on connait $<(Y^k_i)_k>$ (les réponses des médecins).\\
 
-DES MODIFS ENCORE A FAIRE ...\\
+$\E[T_{i,l}|(Y^k_i)_k]$ peut se réécrire sous la forme suivante : 
 
-Les paramètres $(p_j)_j$ n'étant pas connu on souhaite les estimer, et on les estime par maximum de vraisemblance, à partir du modèle défini dans la partie précédente.\\
-Un problème tout fois est présent, ceci étant dû au modèle que l'on a défini car, la détermination des estimateurs du maximum de vraisemblance nécessitent de bénéficier des observations des labels des images, qui ne sont pas connu, en particulier il nous faut avoir accès aux valeurs des $T_{i,l}$ dans l'exprèssion de la vraisemblance.\\
+\begin{center}
+	\begin{align*}
+		\E[T_{i,l}|(Y^k_i)_k] &= \E[0 \times \1_{\{T_{i,l} = 0\}} + 1 \times \1_{\{T_{i,l} = 1\}}|(Y^k_i)_k] \\
+		&= \E[\1_{\{T_{i,l} = 1\}}|(Y^k_i)_k]\\
+		&= \prob\left( T_{i,l} = 1 |(Y^k_i)_k \right)\\
+	\end{align*}
+\end{center}
 
-Dans un premier temps nous pouvons considérer connu les valeurs de $T{i,l}$ afin de déterminer les expréssions des estimateurs du maximum de vraisemblance, on se concentrera dans un second temps à comment déterminer les $T_{i,l}$.
+En explicitant cette probabilité on a : 
+
+\begin{center}
+	\begin{align*}
+		\prob\left( T_{i,l} = 1 |(Y^k_i)_k \right) &= \displaystyle \frac{\prob \left( \left( T_{i,l} = 1 \right) \cap \left(Y^k_i\right)_k\right)}{\prob \left( \left( Y^k_i \right)_k \right)}\\
+		&= \displaystyle \frac{\prob \left( \left(Y^k_i \right)_k | \left( T_{i,l} =1 \right) \right) \times \prob (T_{i,l} = 1)}{\displaystyle \sum_l^J \prob \left( \left(Y^k_i \right)_k | \left( X_i = l \right) \right) \times \prob (X_i = l)}\\
+		&= \displaystyle \frac{\prob \left( \left(Y^k_i \right)_k | \left( X_i = l \right) \right) \times \prob (X_i = l)}{\displaystyle \sum_l^J \prob \left( \left(Y^k_i \right)_k | \left( X_i = l \right) \right) \times \prob (X_i = l)}\\
+		&= \displaystyle \frac{p_l \displaystyle \prod_k^K \displaystyle \prod_j^J (\pi^k_{l,j})^{n^k_{i,j}}}{\displaystyle \sum_l^J p_l \displaystyle \prod_k^K \displaystyle \prod_j^J (\pi^k_{l,j})^{n^k_{i,j}}}, \textit{car } \forall i,l ~\{X_i = l\} = \{T_{i,l} = 1\}\\
+	\end{align*}
+\end{center}
+
+
+\begin{rem}
+On a donc réussi à obtenir une estimation des $T_{i,l}$ dépendant des paramètres $(\pi^k_{l,j})_{k,l,j}$ et $p_l$. Cependant ces paramètres n'étant pas connu, il nous faut les estimer et on les estime par maximum de vraisemblance, à partir du modèle défini dans la partie précédente.\\
+Un problème est présent, ceci étant dû au modèle que l'on a défini car, la détermination des estimateurs du maximum de vraisemblance nécessitent de bénéficier des observations des labels des images, qui ne sont pas connu, en particulier il nous faut avoir accès aux valeurs des $T_{i,l}$ dans l'exprèssion de la vraisemblance.\\
+
+Ceci ne nous permet pas, dans ce cas, de donner les estimateurs du maximum de vraisemblance des $(\pi^k_{l,j})_{k,l,j}$ et $p_l$. \\
+Toutefois, on voit apparaître une procédure permettant d'estimer les estimateurs du maximum de vraisemblance et l'espérance conditionnelle des $T_{i,l}$, il s'agit dans un premier temps, d'estimer arbitrairement les $T_{i,l}$ afin d'obtenir une estimation des estimateurs du maximum de vraisemblance $(\pi^k_{l,j})_{k,l,j}$ et $p_l$.\\
+On peut alors donner une estimation des $\E[T_{i,l}|(Y^k_i)_k]$, et de nouveau obtenir une estimation des estimateurs du maximum de vraisemblance des $(\pi^k_{l,j})_{k,l,j}$ et $p_l$. Cette procédure itérative coorespond à ce que l'on appelle l'algoritme EM.\\
+
+Il n'existe pas de preuvre de convergence de la suite de paramètres établie par l'algorithme EM vers les estimateurs définie, et le choix de bons paramètres initiaux est de fait primordial.\\
+Comme sus-mentionné en début de partie, nous disposons d'une garantie théorique de l'algoritme EM justifiant la démarche que nous avons introduit;  celle-ci étant que les estimateurs ainsi obtenus ont la particularités de faire croitre, à chaque itération, la vraisemblance des observations. \\
+Toutefois, ce résultat ne prétend pas que l'algorithme EM maximisera la vraisemblance des observations. Ce dernier peut tout à fait produire une suite de paramètres correspondant à un maximum local ; et une augmentation du nombre d'itérations n'apportera pas de solution à ce problème.\\
+\end{rem}
+\bigskip
+\bigskip
+\bigskip
+
+
+
+Considérerons connu les valeurs de $T{i,l}$, et déterminons à présent les expréssions des estimateurs du maximum de vraisemblance.
 \bigskip
 
 En effectuant la maximisation du Lagrangien de la fonction de vraisemblance: 
@@ -369,38 +407,9 @@ Les contraintes de maximisation permettent ensuite d'obtenir les dénominateurs 
 \bigskip
 \bigskip
 
-A présent que l'on dispose des estimateurs du maximum de vraisemblance, il nous faut déterminer les $T_{i,l}$, nécessaire au calcul des estimateurs. Ces derniers n'étant pas connu, on souhaite les estimer. \\
-Un estimateur naturel pouvant être prit pour chaque $T_{i,l}$ est l'espérance conditionnelle sachant $(Y^k_i)_k$, $\E[T_{i,l}|(Y^k_i)_k]$. \\
-Il s'agit de la meilleure approximation de $T_{i,l}$ au sens de la norme $\mathcal{L}^2$, à partir de ce que l'on connait $<(Y^k_i)_k>$ (les réponses des médecins).\\
 
-$\E[T_{i,l}|(Y^k_i)_k]$ peut se réécrire sous la forme suivante : 
 
-\begin{center}
-	\begin{align*}
-		\E[T_{i,l}|(Y^k_i)_k] &= \E[0 \times \1_{\{T_{i,l} = 0\}} + 1 \times \1_{\{T_{i,l} = 1\}}|(Y^k_i)_k] \\
-		&= \E[\1_{\{T_{i,l} = 1\}}|(Y^k_i)_k]\\
-		&= \prob\left( T_{i,l} = 1 |(Y^k_i)_k \right)\\
-	\end{align*}
-\end{center}
 
-En explicitant cette probabilité on a : 
-
-\begin{center}
-	\begin{align*}
-		\prob\left( T_{i,l} = 1 |(Y^k_i)_k \right) &= \displaystyle \frac{\prob \left( \left( T_{i,l} = 1 \right) \cap \left(Y^k_i\right)_k\right)}{\prob \left( \left( Y^k_i \right)_k \right)}\\
-		&= \displaystyle \frac{\prob \left( \left(Y^k_i \right)_k | \left( T_{i,l} =1 \right) \right) \times \prob (T_{i,l} = 1)}{\displaystyle \sum_l^J \prob \left( \left(Y^k_i \right)_k | \left( X_i = l \right) \right) \times \prob (X_i = l)}\\
-		&= \displaystyle \frac{\prob \left( \left(Y^k_i \right)_k | \left( X_i = l \right) \right) \times \prob (X_i = l)}{\displaystyle \sum_l^J \prob \left( \left(Y^k_i \right)_k | \left( X_i = l \right) \right) \times \prob (X_i = l)}\\
-		&= \displaystyle \frac{p_l \displaystyle \prod_k^K \displaystyle \prod_j^J (\pi^k_{l,j})^{n^k_{i,j}}}{\displaystyle \sum_l^J p_l \displaystyle \prod_k^K \displaystyle \prod_j^J (\pi^k_{l,j})^{n^k_{i,j}}}, \textit{car } \forall i,l ~\{X_i = l\} = \{T_{i,l} = 1\}\\
-	\end{align*}
-\end{center}
-
-On a donc réussi à obtenir une estimation des $T_{i,l}$, mais celle-ci dépend des paramètres recherchés. Ceci ne nous permet pas, dans ce cas, de donner les estimateurs du maximum de vraisemblance des $(\pi^k_{l,j})_{k,l,j}$ et $p_l$. \\
-Toute fois, on voit alors apparaître une procédure permettant d'estimer les estimateurs du maximum de vraisemblance, il s'agit dans un premier temps, d'estimer arbitrairement les $T_{i,l}$ afin d'obtenir une estimation des estimateurs du maximum de vraisemblance $(\pi^k_{l,j})_{k,l,j}$ et $p_l$.\\
-On peut alors donner une estimation des $\E[T_{i,l}|(Y^k_i)_k]$, et de nouveau obtenir une estimation des estimateurs du maximum de vraisemblance des $(\pi^k_{l,j})_{k,l,j}$ et $p_l$. Cette procédure itérative coorespond à ce que l'on appelle l'algoritme EM.\\
-
-Il n'existe pas de preuvre de convergence de la suite de paramètres établie par l'algorithme EM et le chois de bons paramètres initiaux est de fait primordial.\\
-Comme sus-mentionné en début de partie, nous disposons d'une garantie théorique de l'algoritme EM justifiant la démarche que nous avons introduit;  celle-ci étant que les estimateurs ainsi obtenus ont la particularités de faire croitre, à chaque itération, la vraisemblance des observations. \\
-Toute fois, ce résultat ne prétend pas que l'algorithme EM maximisera la vraisemblance des observations. Ce dernier peut tout à fait produire une suite de paramètres correspondant à un maximum local ; et une augmentation du nombre d'itérations n'apportera pas de solution à ce problème.\\
 
 \section{Initialisation des $T_{i,l}$}
 
