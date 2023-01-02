@@ -3,7 +3,7 @@ from functions import *
   
 #
   
-user = "nicolas"
+user = "au"
   
 # 
   
@@ -20,7 +20,7 @@ labels = meta['label_names']  #nom des labels
 X = data['data']   # images couleurs (10 000, 3072)
 Y = data['labels']   # numéro de labélisation  10 000
   
-n = 9912 #random.randrange(0,len(X))
+n = 9911 #random.randrange(0,len(X))
 display(X[n],Y[n],labels)
 
 #%%

@@ -249,12 +249,12 @@ Dans un premier temps nous considérons le cas d'un participant et une image.\\
 Nous émettons l'hypothèse suivante : 
 
 \begin{hyp}
-	Nous supposons que, $\forall j,k \in \llbracket 1,J \rrbracket \times \llbracket 1,K \rrbracket$, $Y^k_i | X_i = \alpha_i \sim Multinomiale((\pi^k_{\alpha_i,j})_{j \in \llbracket 1,J \rrbracket},1)$
+	Nous supposons que, $\forall j,k \in \llbracket 1,J \rrbracket \times \llbracket 1,K \rrbracket$, $Y^k_i | X_i = \alpha_i \sim Multinomiale(n,(\pi^k_{\alpha_i,j})_{j \in \llbracket 1,J \rrbracket})$
 \end{hyp}
 
 Sachant que l'image $i$ a pour label $\alpha_i$, la réponse du participant $k$ suit une loi multinomiale. Dans le cas où le label de l'image $i$ est connu, le participant $k$ peut aussi y avoir accès, et nous avons $Y^k_i, X_i $ non indépendant. \\
 
-Les paramètres $(\pi^k_{\alpha_i,j})_{j \in \llbracket 1,J \rrbracket}$ correspondent à la probabilité que le participant $k$  attribue le label $j$ à l'image $i$ sachant que le label correct est le label $\alpha_i$.\\
+Chaque paramètre $(\pi^k_{\alpha_i,j})_{j \in \llbracket 1,J \rrbracket}$ correspond à la probabilité que le participant $k$  attribue le label $j$ à l'image $i$ sachant que le label correct est le label $\alpha_i$.\\
 
 \newpage
 On a ainsi :
@@ -381,7 +381,7 @@ Toutefois, ce résultat ne prétend pas que l'algorithme EM maximisera la vraise
 
 \newpage
 
-Considérerons connu les valeurs de $T{i,l}$, et déterminons à présent les expréssions des estimateurs du maximum de vraisemblance.
+Considérerons connu les valeurs de $T{i,l}$, et déterminons à présent les expressions des estimateurs du maximum de vraisemblance.
 \bigskip
 
 En effectuant la maximisation du Lagrangien de la fonction de vraisemblance: 
@@ -424,13 +424,13 @@ On peut proposer une initialisation simple des  $T_{i,l}$ sans la base d'une que
 
 Mais cette initialisation n'est pas optimale pour espérer estimer converger vers les estimateurs du maximum de vraisemblance.\\
 
-Si les participants annotent suffisament bien les images, on peut donner une meilleur initialisation des $T_{i,l}$ en se basant sur les résultats obtenus des participants, dans ce cas on estime $T_{i,l}$ par : 
+Si les participants annotent suffisament bien les images, on peut donner une meilleure initialisation des $T_{i,l}$ en se basant sur les résultats obtenus des participants, dans ce cas on estime $T_{i,l}$ par : 
 
 \begin{center}
 	 $T_{i,l} = \displaystyle \frac{ \displaystyle \sum_k n_{i,l}^k}{\displaystyle \sum_k \displaystyle \sum_j n_{i,j}^k}$
 \end{center}
 
-Il s'agit d'estimer $T_{i,l}$ par le nombre de fois que les participants ont annoté $l$ l'image $i$ sur l'ensemble des annotations qu'ils ont donné pour l'image $i$, ici les $n_{i,l}^k$ valent soit $1$ soit $0$. On estime $T_{i,l}$ par une sorte de "vote majoritaire".
+Il s'agit d'estimer $T_{i,l}$ par le nombre de fois où les participants ont annoté $l$ l'image $i$ sur l'ensemble des annotations qu'ils ont données pour l'image $i$, ici les $n_{i,l}^k$ valent soit $1$ soit $0$. On estime $T_{i,l}$ par une sorte de "vote majoritaire".
 
 \chapter{Pseudo-Code algoritme EM}
 
@@ -443,7 +443,7 @@ Puisque seule son expression est nécessaire pour obtenir l'estimation des estim
 
 \section{L'étape M (Maximization)}
 
-La phase M consiste à maximiser la vraisemblance du modèle, ce maximum est atteint en les paramètres $\left(\widehat{\pi^k_{l,j}}, \widehat{p_l} \right)$ et ces trois paramètres seront calculés à l'aide des maximas établis à la page $6$. Ce sont ces estimateurs qui seront utilisés dans l'itération suivante pour mettre à jour estimation à l'étape E.
+La phase M consiste à maximiser la vraisemblance du modèle, ce maximum est atteint en les paramètres $\left(\widehat{\pi^k_{l,j}}, \widehat{p_l} \right)$ et ces deux paramètres seront calculés à l'aide des maximas établis à la page $6$. Ce sont ces estimateurs qui seront utilisés dans l'itération suivante pour mettre à jour estimation à l'étape E.
 
 \section{Pseudo-code}
 
@@ -458,11 +458,6 @@ La phase M consiste à maximiser la vraisemblance du modèle, ce maximum est att
 		\RETURN {$max_{_l} \left(\widehat{T_{i,l}}\right)_N $;}
 	\end{algorithmic}
 \end{algorithm}
-
-\newpage
-
-\section{Application}
-
 
 
 \end{document}
