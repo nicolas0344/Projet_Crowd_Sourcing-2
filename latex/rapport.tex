@@ -395,7 +395,7 @@ Sous la contrainte $\forall l,k \in  \llbracket 1,J \rrbracket \times  \llbracke
 On obtient les estimateurs du maximum de vraisemblance suivants : \\
 
 \begin{center} 
-	$\widehat{\pi^{k}_{l,j}} = \displaystyle \frac{\displaystyle \sum_i T_{i,l} n^k_{i,j}}{\displaystyle \sum_l \displaystyle \sum_i T_{i,l} n^k_{i,j}}$
+	$\widehat{\pi^{k}_{l,j}} = \displaystyle \frac{\displaystyle \sum_i T_{i,l} n^k_{i,j}}{\displaystyle \sum_j \displaystyle \sum_i T_{i,l} n^k_{i,j}}$
 \end{center}
 \begin{center}
 	$\widehat{p_l} = \displaystyle \frac{\displaystyle \sum_i T_{i,l}}{I}$
@@ -452,7 +452,7 @@ La phase M consiste à maximiser la vraisemblance du modèle, ce maximum est att
 	\begin{algorithmic}[1]
 		\REQUIRE{initialisation des $(T_{i,l})_{i,l} = (T_{i,l})_0$, les observations $\left(Y^k_{i}\right)_{k,i}$, $(n_{i,l}^k)_{k,i,l}$ et $N \in \mathbb{N}$ le nombre d'intération;}
 		\FOR {$n $ allant de $1$ à $N$}
-		\STATE {$\text{\textbf{ETAPE M :} \textit{Calculer les }} \left(\widehat{\pi^k_{l,j}}\right)_n = \displaystyle \frac{\displaystyle \sum_i \left(T_{i,l}\right)_{n-1} n^k_{i,j}}{\displaystyle \sum_l \displaystyle \sum_i \left(T_{i,l}\right)_{n-1} n^k_{i,j}} $, $\left(\widehat{p_l}\right)_n = \displaystyle \frac{\displaystyle \sum_i \left(T_{i,l}\right)_{n-1}}{I}$}
+		\STATE {$\text{\textbf{ETAPE M :} \textit{Calculer les }} \left(\widehat{\pi^k_{l,j}}\right)_n = \displaystyle \frac{\displaystyle \sum_i \left(T_{i,l}\right)_{n-1} n^k_{i,j}}{\displaystyle \sum_j \displaystyle \sum_i \left(T_{i,l}\right)_{n-1} n^k_{i,j}} $, $\left(\widehat{p_l}\right)_n = \displaystyle \frac{\displaystyle \sum_i \left(T_{i,l}\right)_{n-1}}{I}$}
 		\STATE {$\text{\textbf{ETAPE E :}\textit{ Calculer }} \left(\widehat{T_{i,l}}\right)_n = \displaystyle \frac{ \left(\widehat{p_l}\right)_n \displaystyle \prod_k^K \displaystyle \prod_j^J \left(\widehat{\pi^k_{l,j}}\right)_n^{n^k_{i,j}}}{\displaystyle \sum_l^J \left(\widehat{p_l}\right)_n \displaystyle \prod_k^K \displaystyle \prod_j^J \left(\widehat{\pi^k_{l,j}}\right)_n^{n^k_{i,j}}}$;}
 		\ENDFOR
 		\RETURN {$max_{_l} \left(\widehat{T_{i,l}}\right)_N $;}
