@@ -3,7 +3,7 @@ from functions import *
   
 #
   
-user = "au"
+user = "nicolas"
   
 # 
   
@@ -28,87 +28,32 @@ os.chdir(path_to_project)
 
 df = pd.read_csv("cifar10h-raw.csv",na_values="-99999")
 df.dropna(inplace=True)  # delete annotators/spamers
+<<<<<<< HEAD
+=======
 
 print(len(df))
 print(len(df['cifar10_test_test_idx'].unique()))
 print(len(df['annotator_id'].unique()))
 print("")
 
+>>>>>>> refs/remotes/origin/main
 df_test = df[['annotator_id','true_label','chosen_label','cifar10_test_test_idx']]
-df_test = df_test[df_test['cifar10_test_test_idx']<100]
 
-print(len(df_test))
+
+#On réduit la taille du jeu de donnée pour des fins numériques
+
+df_test = df_test[df_test['annotator_id']<150]
+print(len(df_test['annotator_id'].unique()))
+print(len(df_test['cifar10_test_test_idx'].unique()))
+df_test = df_test[df_test['cifar10_test_test_idx']<250]
 print(len(df_test['cifar10_test_test_idx'].unique()))
 print(len(df_test['annotator_id'].unique()))
-# 5136
-# 100
-# 2197
+
 K = len(df_test['annotator_id'].unique())
 I = len(df_test['cifar10_test_test_idx'].unique())
 J = 10
 
-idx = df['cifar10_test_test_idx'].unique()  #numéro de l'image
-K = len(df['annotator_id'].unique())
-# 2571 annotators
-
-PI_k = []
-N_k = []
-for i in range(K):
-    PI_k += [ np.ones((len(labels),len(labels))) ]
-    N_k += [ np.ones((len(X),len(labels))) ]
-
-# print(np.shape(PI_k[0]))
-# (10, 10)
-
-# PI_k[j][l] : in theory probability that the observer has given the label l
-# where j is the right label
-
-T = np.ones((len(X),len(labels)))
-# print(np.shape(T))
-# (10 000, 10)
-# T[i][j] : in theory 1 if j is the correct label for i
-
-p = [1]*len(labels)
-# print(len(p))
-# 10
-
-# p[j] : in theory probability that a random image has the label j
-
-#%%
-
-PI_test = []
-N_test = []
-for k in range(1000):
-    PI_test += [ np.random.random((5,5)) ]
-    N_test += [ np.random.random((10000,5)) ]
-
-T_test = np.random.random((10000,5))
-p_test = [1]*5
-
-
-
-K = 1000 #len(df_test['annotator_id'].unique())
-I = 10000 #len(df_test['cifar10_test_test_idx'].unique())
-J = 10
-
-PI_test2 = []
-N_test2 = []
-for k in range(K):
-    PI_test2 += [ np.random.random((J,J)) ]
-    N_test2 += [ np.random.random((I,J)) ]
-
-T_test2 = np.random.random((I,J))
-p_test2 = [1]*J
-
-df_test = df[['annotator_id','true_label','chosen_label','cifar10_test_test_idx']]
-df_test = df_test[df_test['annotator_id']<60]
-print(len(df_test['annotator_id'].unique()))
-df_test = df_test[df_test['cifar10_test_test_idx']<100]
-print(len(df_test['cifar10_test_test_idx'].unique()))
-print(len(df_test['annotator_id'].unique()))
-
-
-T_test = np.random.random((I,J))
+T_test = np.ones((I,J))*(1/J)
 N_test = []
 for k in range(K):
     print(k)
@@ -124,14 +69,37 @@ def create_matrix_N(A):
     return(N)
 
 
+# PI[k][j,l] : in theory probability that the observer has given the label l
+# where j is the right label
 
-def produit_liste(A):
-    a = 1
-    for i in A: 
-        a = a*i
-    return(a)
+# T[i][j] : in theory 1 if j is the correct label for i
+
+# p[j] : in theory probability that a random image has the label j
+
+#%%
+
+PI_test = []
+N_test = []
+for k in range(1000):
+    PI_test += [ np.random.random((10,10)) ]
+    N_test += [ np.random.random((10000,10)) ]
+
+T_test = np.random.random((10000,10))
+p_test = [1]*10
 
 
+PI_test2 = []
+N_test2 = []
+for k in range(K):
+    PI_test2 += [ np.random.random((J,J)) ]
+    N_test2 += [ np.random.random((I,J)) ]
+
+T_test2 = np.random.random((I,J))
+p_test2 = [1]*J
+
+#%%
+
+# T 
 def EM_stepM(T,N):
     I = len(T[:,0])
     J = len(T[0,:])
@@ -140,24 +108,24 @@ def EM_stepM(T,N):
     PI = []
     for k in range(K):
         PI += [ np.ones((J,J)) ]
-    p = [1]*J
+    p = [1/J]*J
     
     for k in range(K):
         for l in range(J): 
-            
             sum_j = 0.0
+            
             for a in range(J):
-                sum_j += sum(T[:,l]*N[k][:,a]) #step E
+                sum_j += sum(T[:,l]*N[k][:,a]) 
             
             for j in range(J): 
                 sum_i = sum(T[:,l]*N[k][:,j])
-                PI[k][l,j] = sum_i/sum_j  #step E
+                PI[k][l,j] = sum_i/sum_j
+                print(PI[k][l,j])
             
             p[l] = sum(T[:,l])/I
     return([PI,p,N,T])
 
 EM_stepM(T_test, N_test)
-
 
 def EM_stepE(f):
     PI = f[0]
@@ -185,14 +153,14 @@ def EM_stepE(f):
         
 EM_stepE(EM_stepM(T_test,N_test))
 EM_stepE(EM_stepM(T_test2,N_test2))
-1 * 1 * 0.1**1.0
 
+#%%
 def EM_algo(T,N,n):
-    
-    for i in range(n):
-        T = EM_stepE(EM_stepM(T,N))
-    return(T)
-
-EM_algo(T_test,N_test,1)
+    t=EM_stepE(EM_stepM(T,N))
+    for i in range(n-1):
+        t = EM_stepE(EM_stepM(t,N))
+    return(t)
+#%%
+max(EM_algo(T_test,N_test,3)[0,:])
 
 # %%
