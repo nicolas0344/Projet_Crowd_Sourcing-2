@@ -459,5 +459,26 @@ La phase M consiste à maximiser la vraisemblance du modèle, ce maximum est att
 	\end{algorithmic}
 \end{algorithm}
 
+\chapter{Labels de CIFAR 10}
+
+CIFAR 10 est un ensemble de 60 000 images 32x32 réparties en 10 classes :
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
+    \hline
+        0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\ \hline
+        airplane & automobile & bird & cat & deer & dog & frog & horse & ship & truck \\ \hline
+    \end{tabular}
+\end{table}
+
+Il y a 50 000 images pour le "training" des algorithmes de type réseaux de neurones et 10 000 images de "test". Nous nous intéressons exclusivement au sous-ensemble "test". Celui-ci contient exactement 1 000 images de chaque classe. (On pourrait donc utiliser directement $p_l = 0.1$ plutôt que de l'estimer). CIFAR-10H nous donne accès à 514 200 annotations d'un total de 2571 annotateurs sur nos 10 000 images. Nous avons pris soin d'enlever les annotations "check trials" qui n'entrent pas en compte dans les annotations réelles.
+
+\par En prenant en compte l'identifiant des annotateurs, le label choisi par chacun sur une image donnée (chaque image a été annoté 50 fois en moyenne ($10 000*50 = 500 000$)), et l'identifiant de l'image correspondante, nous pouvons utiliser l'algorithme de la section précédente.
 
 \end{document}
+
+
+
+
+

@@ -29,6 +29,11 @@ os.chdir(path_to_project)
 df = pd.read_csv("cifar10h-raw.csv",na_values="-99999")
 df.dropna(inplace=True)  # delete annotators/spamers
 
+print(len(df))
+print(len(df['cifar10_test_test_idx'].unique()))
+print(len(df['annotator_id'].unique()))
+print("")
+
 df_test = df[['annotator_id','true_label','chosen_label','cifar10_test_test_idx']]
 df_test = df_test[df_test['cifar10_test_test_idx']<100]
 
