@@ -36,17 +36,17 @@ CIFAR-10h is a dataset of labels reflecting human perceptual uncertainty for the
 
 ## Instructions for application in code_EM_DAWID-SKENE : 
 
-# You have to download cifar10 for pyhton at the link : http://www.cs.toronto.edu/~kriz/cifar.html
+ You have to download cifar10 for pyhton at the link : http://www.cs.toronto.edu/~kriz/cifar.html
   - Extrate files
   - Create a folder containing : cifar-10-batches-py , next to "Projet_Crowd_Sourcing" folder 
 
-# Inter in the file functions.py in the path : code_EM_DAWID-SKENE 
+ Inter in the file functions.py in the path : code_EM_DAWID-SKENE 
   - On comment lines 
   - Inter on (if user == ".." :) your name user ( like : test ) 
   - Inter and your path to your GitHub file (before Projet_Crowd_Sourcing) in path_to_Github_folder = os.path.join( .. )
   - Uncomment lines 
 
-# Inter in the file script.py in the path : code_EM_DAWID-SKENE 
+ Inter in the file script.py in the path : code_EM_DAWID-SKENE 
   - Inter your name user at the beginning
 
-# Run cells 
+ Run cells 
