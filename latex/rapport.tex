@@ -358,9 +358,9 @@ En explicitant cette probabilité on a :
 \begin{center}
 	\begin{align*}
 		\prob\left( T_{i,l} = 1 |(Y^k_i)_k \right) &= \displaystyle \frac{\prob \left( \left( T_{i,l} = 1 \right) \cap \left(Y^k_i\right)_k\right)}{\prob \left( \left( Y^k_i \right)_k \right)}\\
-		&= \displaystyle \frac{\prob \left( \left(Y^k_i \right)_k | \left( T_{i,l} =1 \right) \right) \times \prob (T_{i,l} = 1)}{\displaystyle \sum_l^J \prob \left( \left(Y^k_i \right)_k | \left( X_i = l \right) \right) \times \prob (X_i = l)}\\
-		&= \displaystyle \frac{\prob \left( \left(Y^k_i \right)_k | \left( X_i = l \right) \right) \times \prob (X_i = l)}{\displaystyle \sum_l^J \prob \left( \left(Y^k_i \right)_k | \left( X_i = l \right) \right) \times \prob (X_i = l)}\\
-		&= \displaystyle \frac{p_l \displaystyle \prod_k^K \displaystyle \prod_j^J (\pi^k_{l,j})^{n^k_{i,j}}}{\displaystyle \sum_l^J p_l \displaystyle \prod_k^K \displaystyle \prod_j^J (\pi^k_{l,j})^{n^k_{i,j}}}, \textit{car } \forall i,l ~\{X_i = l\} = \{T_{i,l} = 1\}\\
+		&= \displaystyle \frac{\prob \left( \left(Y^k_i \right)_k | \left( T_{i,l} =1 \right) \right) \times \prob (T_{i,l} = 1)}{\displaystyle \sum_q^J \prob \left( \left(Y^k_i \right)_k | \left( X_i = q \right) \right) \times \prob (X_i = q)}\\
+		&= \displaystyle \frac{\prob \left( \left(Y^k_i \right)_k | \left( X_i = l \right) \right) \times \prob (X_i = l)}{\displaystyle \sum_q^J \prob \left( \left(Y^k_i \right)_k | \left( X_i = q \right) \right) \times \prob (X_i = q)}\\
+		&= \displaystyle \frac{p_l \displaystyle \prod_k^K \displaystyle \prod_j^J (\pi^k_{l,j})^{n^k_{i,j}}}{\displaystyle \sum_q^J p_q \displaystyle \prod_k^K \displaystyle \prod_j^J (\pi^k_{q,j})^{n^k_{i,j}}}, \textit{car } \forall i,l ~\{X_i = l\} = \{T_{i,l} = 1\}\\
 	\end{align*}
 \end{center}
 
@@ -453,7 +453,7 @@ La phase M consiste à maximiser la vraisemblance du modèle, ce maximum est att
 		\REQUIRE{initialisation des $(T_{i,l})_{i,l} = (T_{i,l})_0$, les observations $\left(Y^k_{i}\right)_{k,i}$, $(n_{i,l}^k)_{k,i,l}$ et $N \in \mathbb{N}$ le nombre d'intération;}
 		\FOR {$n $ allant de $1$ à $N$}
 		\STATE {$\text{\textbf{ETAPE M :} \textit{Calculer les }} \left(\widehat{\pi^k_{l,j}}\right)_n = \displaystyle \frac{\displaystyle \sum_i \left(T_{i,l}\right)_{n-1} n^k_{i,j}}{\displaystyle \sum_j \displaystyle \sum_i \left(T_{i,l}\right)_{n-1} n^k_{i,j}} $, $\left(\widehat{p_l}\right)_n = \displaystyle \frac{\displaystyle \sum_i \left(T_{i,l}\right)_{n-1}}{I}$}
-		\STATE {$\text{\textbf{ETAPE E :}\textit{ Calculer }} \left(\widehat{T_{i,l}}\right)_n = \displaystyle \frac{ \left(\widehat{p_l}\right)_n \displaystyle \prod_k^K \displaystyle \prod_j^J \left(\widehat{\pi^k_{l,j}}\right)_n^{n^k_{i,j}}}{\displaystyle \sum_l^J \left(\widehat{p_l}\right)_n \displaystyle \prod_k^K \displaystyle \prod_j^J \left(\widehat{\pi^k_{l,j}}\right)_n^{n^k_{i,j}}}$;}
+		\STATE {$\text{\textbf{ETAPE E :}\textit{ Calculer }} \left(\widehat{T_{i,l}}\right)_n = \displaystyle \frac{ \left(\widehat{p_l}\right)_n \displaystyle \prod_k^K \displaystyle \prod_j^J \left(\widehat{\pi^k_{l,j}}\right)_n^{n^k_{i,j}}}{\displaystyle \sum_q^J \left(\widehat{p_q}\right)_n \displaystyle \prod_k^K \displaystyle \prod_j^J \left(\widehat{\pi^k_{l,j}}\right)_n^{n^k_{i,j}}}$;}
 		\ENDFOR
 		\RETURN {$max_{_l} \left(\widehat{T_{i,l}}\right)_N $;}
 	\end{algorithmic}

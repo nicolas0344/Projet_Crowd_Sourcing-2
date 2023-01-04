@@ -26,22 +26,3 @@ def paths(user):
         path_to_CIFAR10 = os.path.join(path_to_Github_folder,"cifar-10-batches-py")
 
     return path_to_Github_folder, path_to_project, path_to_CIFAR10
-
-# to load CIFAR 10 :
-
-def unpickle(file):
-    import pickle
-    with open(file, 'rb') as fo: 
-        dict = pickle.load(fo, encoding='latin1')
-    return dict
-
-# to display a single image :
-
-def display(image,label,labels): 
-    
-    image = image.reshape(3,32,32)
-    image = image.transpose(1,2,0)
-    plt.imshow(image)
-
-    plt.title(labels[label])
-    plt.show()
