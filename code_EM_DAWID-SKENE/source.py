@@ -64,7 +64,6 @@ def EM_stepM(T,N):
             for j in range(J): 
                 sum_i = sum(T[:,l]*N[k][:,j])
                 PI[k][l,j] = sum_i/sum_j
-                print(PI[k][l,j])
             
             p[l] = sum(T[:,l])/I
     return([PI,p,N,T])

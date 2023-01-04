@@ -24,5 +24,12 @@ def paths(user):
 
         path_to_project = os.path.join(path_to_Github_folder,"Projet_Crowd_Sourcing","code_EM_DAWID-SKENE")
         path_to_CIFAR10 = os.path.join(path_to_Github_folder,"cifar-10-batches-py")
+        
+    # if user == ".." : 
+        
+    #     path_to_Github_folder = os.path.join( .. inter your path to the GitHub file (before Projet_Crowd_Sourcing) .. )
+        
+    #     path_to_project = os.path.join(path_to_Github_folder,"Projet_Crowd_Sourcing","code_EM_DAWID-SKENE")
+    #     path_to_CIFAR10 = os.path.join(path_to_Github_folder,"cifar-10-batches-py")
 
     return path_to_Github_folder, path_to_project, path_to_CIFAR10

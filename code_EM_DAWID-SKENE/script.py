@@ -4,7 +4,9 @@ from source import *
   
 
 # inter your name user difined in the paths function of the function file
-user = "nicolas"
+# you have to uncomment the next line 
+
+#user = ".."
   
 #%%
   
@@ -80,9 +82,9 @@ for k in range(K):
 
 # N_test = []
 # for k in range(K):
-#     N_test += [ .. numpy matrix of size = (I,J) .. ]
+#     N_test += [ .. numpy matrix of size = (I,J) = np.random.random((I,J)).. ] 
 
-# T_test = .. numpy matrix of size = (I,J) ..
+# T_test = .. numpy matrix of size = (I,J) = np.random.randint(2, size = (1,J)) .. 
 # p_test =  .. list of size = J .. 
 
 

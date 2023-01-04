@@ -220,7 +220,7 @@ En science appliquée et notamment en statistique inférentielle, le recueil de 
 
 Dans un cadre idéal, les modèles construits nécessitent un faible nombre de données dont l'observation peut être réalisée par des professionnels du domaine concerné. Toujours est-il que ces situations sont peu courantes et l'observation, par ces experts, d'un grand nombre de données n'est pas envisageable. C'est à ce titre que le "Crowd-Sourcing" est couramment utilisé, puisqu'un grand nombre d'intervenants permet de construire la base de donnée nécessaire. Toutefois des erreurs d'obervations quant à la nature des données peut-être commises, il est alors essentiel de s'accorder sur une décision.
 
-C'est à ce problème, que ce projet propose de présenter différentes solutions. Nous étudierons le modèle construit par DAWID et SKENE.
+C'est à ce problème, que ce projet propose de présenter différentes solutions. Nous étudierons le modèle construit par DAWID et SKENE [1].
 
 
 \newpage
@@ -443,7 +443,7 @@ Puisque seule son expression est nécessaire pour obtenir l'estimation des estim
 
 \section{L'étape M (Maximization)}
 
-La phase M consiste à maximiser la vraisemblance du modèle, ce maximum est atteint en les paramètres $\left(\widehat{\pi^k_{l,j}}, \widehat{p_l} \right)$ et ces deux paramètres seront calculés à l'aide des maximas établis à la page $6$. Ce sont ces estimateurs qui seront utilisés dans l'itération suivante pour mettre à jour estimation à l'étape E.
+La phase M consiste à maximiser la vraisemblance du modèle, ce maximum est atteint en les paramètres $\left(\widehat{\pi^k_{l,j}}, \widehat{p_l} \right)$ et ces deux paramètres seront calculés à l'aide des maximas établis à la page $7$. Ce sont ces estimateurs qui seront utilisés dans l'itération suivante pour mettre à jour estimation à l'étape E.
 
 \section{Pseudo-code}
 
@@ -459,8 +459,9 @@ La phase M consiste à maximiser la vraisemblance du modèle, ce maximum est att
 	\end{algorithmic}
 \end{algorithm}
 
-\chapter{Labels de CIFAR 10}
+\chapter{Application numérique - Labels de CIFAR 10}
 
+\section{CIFAR 10}
 CIFAR 10 est un ensemble de 60 000 images 32x32 réparties en 10 classes :
 
 \begin{table}[!ht]
@@ -472,9 +473,29 @@ CIFAR 10 est un ensemble de 60 000 images 32x32 réparties en 10 classes :
     \end{tabular}
 \end{table}
 
-Il y a 50 000 images pour le "training" des algorithmes de type réseaux de neurones et 10 000 images de "test". Nous nous intéressons exclusivement au sous-ensemble "test". Celui-ci contient exactement 1 000 images de chaque classe. (On pourrait donc utiliser directement $p_l = 0.1$ plutôt que de l'estimer). CIFAR-10H nous donne accès à 514 200 annotations d'un total de 2571 annotateurs sur nos 10 000 images. Nous avons pris soin d'enlever les annotations "check trials" qui n'entrent pas en compte dans les annotations réelles.
+Il y a 50 000 images pour le "training" des algorithmes de type réseaux de neurones et 10 000 images de "test". Nous nous intéressons exclusivement au sous-ensemble "test". Celui-ci contient exactement 1 000 images de chaque classe. (On pourrait donc utiliser directement $p_l = 0.1$ plutôt que de l'estimer). CIFAR-10H nous donne accès à 514 200 annotations d'un total de 2571 annotateurs sur nos 10 000 images. Nous avons pris soin d'enlever les annotations "check trials" qui n'entrent pas en compte dans les annotations réelles.\\
 
-\par En prenant en compte l'identifiant des annotateurs, le label choisi par chacun sur une image donnée (chaque image a été annoté 50 fois en moyenne ($10 000*50 = 500 000$)), et l'identifiant de l'image correspondante, nous pouvons utiliser l'algorithme de la section précédente.
+En prenant en compte l'identifiant des annotateurs, le label choisi par chacun sur une image donnée (chaque image a été annoté 50 fois en moyenne ($10 000*50 = 500 000$)), et l'identifiant de l'image correspondante, nous pouvons utiliser l'algorithme de la section précédente.
+
+\section{Applications}
+
+Une simulation du jeu de données est disponible sur notre page GitHub : \url{https://github.com/Aurelien2021/Projet_Crowd_Sourcing} en suivant les instructions données sur le Beamer.\\
+
+A noter à la différence du modèle développé dans la première partie, que, ici les participants n'annotent pas l'entièreté des images, mais les images sont annotées par un certain nombre de participants. On a aura dans ce cas que les termes en $(n^k_{i,j})_{k,i,j}$ peuvent être pour certaines images $i$ nuls pour tout choix de label $j$ du participant $k$. \\
+
+Le modèle introduit diffère quelques peu du cadre de notre projet, puisque les participants annotent toutes les images dans le modele défini. Toutefois le modèle peu être utilisé et les estimateurs du maximum de vraisemblance gardent toujours de leur sens dans le cadre du "Crowd-Sourcing".\\
+
+\begin{rem}
+	L'implémentation de l'algorithme EM fonctionne, cependant nous obtenons pour les valeurs des $T_{i,l}$ de sortie, les mêmes que celles données en initialisation. Ce problème n'a pas encore été résolu, une cellule est disponible si l'on veut tester différentes valeurs (nous obtenons des valeurs $T_{i,l}$ de sortie différentes lorsque l'on initialise aléatoirement les $T_{i,l}$.
+\end{rem}
+
+
+\chapter{Bibliographie}
+
+[1] Dawid A.P., Skene A.M. (1979).  Maximum Likelihood Estimation of Observer Error-rates using the EM Algorithm \textit{Applied Statistics 28 (1) (1979), pp. 20–28.}\newline
+Pour télécharger le document : 
+\url{https://canvas.northwestern.edu/courses/65895/files/4174911/download?verifier=lUyedGR8Yb7I4NwFOtosvJqir8Oc6huVBwBgI5ko&wrap=1}\newline % doc des oiseaux
+\break
 
 \end{document}
 
